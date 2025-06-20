@@ -1,23 +1,43 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {CustomButton, CustomUploadBox} from '../../components';
+import {Alert, Modal, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  CustomButton,
+  CustomUploadBox,
+  CustomVideoPreviewModal,
+} from '../../components';
 import {spacing} from '../../constants';
 import {navigate} from '../../navigation';
-import {openCamera, openVideoCamera} from '../../utils';
+import {openVideoCamera} from '../../utils';
 
 const PackingVerificationScreen = () => {
-  const [leftImage, setLeftImage] = useState<string | null>(null);
-  const [rightImage, setRightImage] = useState<string | null>(null);
+  const [beforePackingVideoUri, setBeforePackingVideoUri] = useState<
+    string | null
+  >(null);
+  const [afterPackingVideoUri, setAfterPackingVideoUri] = useState<
+    string | null
+  >(null);
 
-  const handleImagePick = async (type: 'left' | 'right') => {
+  const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
+  const [previewVideoUri, setPreviewVideoUri] = useState<string | null>(null);
+
+  const handleVideoCapture = async (type: 'before' | 'after') => {
     const uri = await openVideoCamera();
     if (uri) {
-      type === 'left' ? setLeftImage(uri) : setRightImage(uri);
+      type === 'before'
+        ? setBeforePackingVideoUri(uri)
+        : setAfterPackingVideoUri(uri);
     }
   };
 
-  const handleRemoveImage = async (type: 'left' | 'right') => {
-    type === 'left' ? setLeftImage('') : setRightImage('');
+  const handleRemoveVideo = (type: 'before' | 'after') => {
+    type === 'before'
+      ? setBeforePackingVideoUri(null)
+      : setAfterPackingVideoUri(null);
+  };
+
+  const handlePreviewVideo = (uri: string) => {
+    setPreviewVideoUri(uri);
+    setPreviewModalVisible(true);
   };
 
   return (
@@ -26,25 +46,32 @@ const PackingVerificationScreen = () => {
         <View style={{flex: 1}}>
           <View>
             <Text style={styles.title}>Device Videos</Text>
-            <Text style={styles.subtitle}>Upload focused Video of Device</Text>
+            <Text style={styles.subtitle}>
+              Upload focused video of the device
+            </Text>
           </View>
 
           <View style={[styles.uploadRow, {flex: 1}]}>
-            <View style={{flex: 1}}>
-              <CustomUploadBox
-                uploadText="Upload Video"
-                label="Device video before Packing "
-                imageUri={leftImage}
-                onPress={() => handleImagePick('left')}
-                onRemoveImage={() => handleRemoveImage('left')}
-              />
-            </View>
+            <CustomUploadBox
+              uploadText="Upload Video"
+              label="Before Packing"
+              imageUri={beforePackingVideoUri}
+              onPress={() => handleVideoCapture('before')}
+              onRemoveImage={() => handleRemoveVideo('before')}
+              onPreviewPress={() =>
+                beforePackingVideoUri &&
+                handlePreviewVideo(beforePackingVideoUri)
+              }
+            />
             <CustomUploadBox
               uploadText="Upload Video"
               label="After Packing"
-              imageUri={rightImage}
-              onPress={() => handleImagePick('right')}
-              onRemoveImage={() => handleRemoveImage('right')}
+              imageUri={afterPackingVideoUri}
+              onPress={() => handleVideoCapture('after')}
+              onRemoveImage={() => handleRemoveVideo('after')}
+              onPreviewPress={() =>
+                afterPackingVideoUri && handlePreviewVideo(afterPackingVideoUri)
+              }
             />
           </View>
         </View>
@@ -54,6 +81,17 @@ const PackingVerificationScreen = () => {
           onPress={() => navigate('OtpVerification')}
           style={{marginTop: 20}}
         />
+
+        {previewVideoUri && (
+          <CustomVideoPreviewModal
+            visible={isPreviewModalVisible}
+            uri={previewVideoUri}
+            onClose={() => {
+              setPreviewModalVisible(false);
+              setPreviewVideoUri(null);
+            }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

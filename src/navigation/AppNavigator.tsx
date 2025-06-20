@@ -4,17 +4,25 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthNavigator from './AuthNavigator';
 import TabNavigator from './TabNavigator';
 import {
+  AskForLeaveScreen,
   DeviceExteriorScreen,
   DeviceSidesScreen,
+  EarningsScreen,
+  EditProfileScreen,
+  FaqScreen,
   OrderDetailScreen,
+  OrderHistoryScreen,
+  OtpVerificationScreen,
   PackingVerificationScreen,
+  PickupConfirmationScreen,
+  PrivacyAndPolicyScreen,
+  ReferAndEarnScreen,
+  SupportScreen,
+  TermsAndConditionScreen,
+  TransactionScreen,
 } from '../routes';
 import {colors} from '../constants';
-import {StyleSheet, View} from 'react-native';
-import {
-  OtpVerificationScreen,
-  PickupConfirmationScreen,
-} from '../routes/Others';
+import {StyleSheet, Text, View} from 'react-native';
 
 type Props = {};
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -93,6 +101,129 @@ const AppNavigator = (props: Props) => {
           headerTintColor: '#2B2E35',
         })}
         component={PickupConfirmationScreen}
+      />
+      <RootStack.Screen
+        name="EditProfile"
+        options={() => ({
+          headerShown: false,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: '',
+          headerShadowVisible: false,
+          headerTintColor: '#2B2E35',
+        })}
+        component={EditProfileScreen}
+      />
+      <RootStack.Screen
+        name="ReferAndEarn"
+        options={() => ({
+          headerBackground: () => (
+            <View
+              style={[
+                styles.headerContainer,
+                {
+                  backgroundColor: colors.primary,
+                },
+              ]}>
+              <View style={styles.curvedBackground} />
+            </View>
+          ),
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Refer & Earn',
+          headerShadowVisible: false,
+          headerTintColor: '#2B2E35',
+        })}
+        component={ReferAndEarnScreen}
+      />
+
+      <RootStack.Screen
+        name="Support"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Support',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={SupportScreen}
+      />
+      <RootStack.Screen
+        name="Faq"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'FAQ',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={FaqScreen}
+      />
+      <RootStack.Screen
+        name="TermsAndCondition"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Terms And Condition',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={TermsAndConditionScreen}
+      />
+
+      <RootStack.Screen
+        name="PrivacyAndPolicy"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Privacy & Policy',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={PrivacyAndPolicyScreen}
+      />
+      <RootStack.Screen
+        name="AskForLeave"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Ask For Leave',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={AskForLeaveScreen}
+      />
+      <RootStack.Screen
+        name="Transaction"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Transactions History',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={TransactionScreen}
+      />
+      <RootStack.Screen
+        name="OrderHistory"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Order History',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={OrderHistoryScreen}
+      />
+      <RootStack.Screen
+        name="Earnings"
+        options={() => ({
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          headerTitle: 'Earnings',
+          headerShadowVisible: true,
+          headerTintColor: '#2B2E35',
+        })}
+        component={EarningsScreen}
       />
     </RootStack.Navigator>
   );

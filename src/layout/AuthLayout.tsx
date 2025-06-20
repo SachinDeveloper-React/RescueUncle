@@ -1,45 +1,41 @@
 import React from 'react';
 import {
-  Dimensions,
-  KeyboardAvoidingView,
   KeyboardAvoidingViewProps,
   Platform,
-  ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
-const {height} = Dimensions.get('window');
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 type Props = KeyboardAvoidingViewProps & {
   children: React.ReactNode;
 };
 
 const AuthLayout = ({children, ...props}: Props) => {
-  const {top} = useSafeAreaInsets();
-
   return (
-    <KeyboardAvoidingView
+    <KeyboardAwareScrollView
       {...props}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.flex}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}>
-        <View>{children}</View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      style={styles.wrapper}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+      enableOnAndroid={true}
+      enableAutomaticScroll={true}
+      extraScrollHeight={Platform.OS === 'ios' ? 20 : 200}
+      keyboardShouldPersistTaps="handled">
+      <View>{children}</View>
+    </KeyboardAwareScrollView>
   );
 };
 
 export default AuthLayout;
 
 const styles = StyleSheet.create({
-  flex: {flex: 1},
-  scrollContainer: {
-    paddingBottom: height * 0.1,
-    flexGrow: 1,
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
+    // padding: 16,
+    // paddingBottom: 60,
   },
 });

@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import {Platform, StyleSheet, TextInput, TextInputProps} from 'react-native';
 import {colors, spacing} from '../constants';
 
-const CustomTextInput = (props: TextInputProps) => {
+const CustomTextInput = forwardRef<TextInput, TextInputProps>((props, ref) => {
   return (
     <TextInput
-      style={styles.input}
+      ref={ref}
+      style={[styles.input, props.style]}
       placeholderTextColor={colors.inputBorder}
       {...props}
     />
   );
-};
+});
+
+CustomTextInput.displayName = 'CustomTextInput';
 
 const styles = StyleSheet.create({
   input: {
@@ -26,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomTextInput;
+export default React.memo(CustomTextInput);

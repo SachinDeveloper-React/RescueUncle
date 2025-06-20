@@ -1,1 +1,1 @@
-export {colors, spacing, typography} from './theme';
+export {colors, spacing, typography, height, width} from './theme';

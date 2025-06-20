@@ -4,20 +4,33 @@ import {CustomButton, CustomUploadBox} from '../../components';
 import {spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openCamera} from '../../utils';
+import EnhancedImageViewing from 'react-native-image-viewing';
 
 const DeviceSidesScreen = () => {
   const [leftImage, setLeftImage] = useState<string | null>(null);
   const [rightImage, setRightImage] = useState<string | null>(null);
+  const [visible, setIsVisible] = useState(false);
+  const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
 
   const handleImagePick = async (type: 'left' | 'right') => {
-    const uri = await openCamera();
-    if (uri) {
-      type === 'left' ? setLeftImage(uri) : setRightImage(uri);
+    const result = await openCamera();
+
+    if (result) {
+      console.log('result', result);
+      const uri = result.uri;
+      if (uri) {
+        type === 'left' ? setLeftImage(uri) : setRightImage(uri);
+      }
     }
   };
 
   const handleRemoveImage = async (type: 'left' | 'right') => {
     type === 'left' ? setLeftImage('') : setRightImage('');
+  };
+
+  const handlePreview = (uri: string) => {
+    setSelectedImageUri(uri);
+    setIsVisible(true);
   };
 
   return (
@@ -36,6 +49,7 @@ const DeviceSidesScreen = () => {
                 imageUri={leftImage}
                 onPress={() => handleImagePick('left')}
                 onRemoveImage={() => handleRemoveImage('left')}
+                onPreviewPress={() => leftImage && handlePreview(leftImage)}
               />
             </View>
             <CustomUploadBox
@@ -43,6 +57,7 @@ const DeviceSidesScreen = () => {
               imageUri={rightImage}
               onPress={() => handleImagePick('right')}
               onRemoveImage={() => handleRemoveImage('right')}
+              onPreviewPress={() => rightImage && handlePreview(rightImage)}
             />
           </View>
         </View>
@@ -52,6 +67,18 @@ const DeviceSidesScreen = () => {
           onPress={() => navigate('PackingVerification')}
           style={{marginTop: 20}}
         />
+
+        {selectedImageUri && (
+          <EnhancedImageViewing
+            images={[{uri: selectedImageUri}]}
+            imageIndex={0}
+            visible={visible}
+            onRequestClose={() => {
+              setIsVisible(false);
+              setSelectedImageUri(null);
+            }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

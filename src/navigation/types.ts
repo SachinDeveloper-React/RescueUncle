@@ -24,4 +24,14 @@ export type RootStackParamList = {
   PackingVerification: undefined;
   OtpVerification: undefined;
   PickupConfirmation: undefined;
+  EditProfile: undefined;
+  ReferAndEarn: undefined;
+  Support: undefined;
+  Faq: undefined;
+  TermsAndCondition: undefined;
+  PrivacyAndPolicy: undefined;
+  AskForLeave: undefined;
+  Transaction: undefined;
+  OrderHistory: undefined;
+  Earnings: undefined;
 };

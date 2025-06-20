@@ -1,34 +1,86 @@
 import React from 'react';
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {colors} from '../../../constants';
 import {
-  AllotedAreaIcon,
   AskForLeaveIcon,
   CallIcon,
+  EarningIcon,
   EditProfileIcon,
   EmailIcon,
   FaqIcon,
   LogoutIcon,
+  OrderHistoryIcon,
   PrivacyIcon,
   ReferIcon,
   RightIcon,
   StarIcon,
   SupportIcon,
   TermAndConditionIcon,
+  TransactionIcon,
   UserIcon,
 } from '../../../assets';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {verticalScale, moderateScale} from 'react-native-size-matters';
+import {navigate} from '../../../navigation';
 
 const options = [
-  {id: 1, leftIcon: EditProfileIcon, title: 'Edit profile'},
-  {id: 3, leftIcon: AllotedAreaIcon, title: 'Alloted Area'},
-  {id: 4, leftIcon: ReferIcon, title: 'Refer and Earn'},
-  {id: 5, leftIcon: SupportIcon, title: 'Support'},
-  {id: 6, leftIcon: FaqIcon, title: 'Faq'},
-  {id: 7, leftIcon: TermAndConditionIcon, title: 'Terms And Conditions'},
-  {id: 8, leftIcon: PrivacyIcon, title: 'Privacy'},
-  {id: 9, leftIcon: AskForLeaveIcon, title: 'Ask For Leave'},
-  {id: 10, leftIcon: LogoutIcon, title: 'Logout'},
+  {
+    id: 1,
+    leftIcon: EditProfileIcon,
+    title: 'Edit profile',
+    navigate: 'EditProfile',
+  },
+  {
+    id: 2,
+    leftIcon: TransactionIcon,
+    title: 'Transaction',
+    navigate: 'Transaction',
+  },
+  {
+    id: 3,
+    leftIcon: OrderHistoryIcon,
+    title: 'Order History',
+    navigate: 'OrderHistory',
+  },
+  {
+    id: 11,
+    leftIcon: EarningIcon,
+    title: 'Earnings',
+    navigate: 'Earnings',
+  },
+  {
+    id: 4,
+    leftIcon: ReferIcon,
+    title: 'Refer and Earn',
+    navigate: 'ReferAndEarn',
+  },
+  {id: 5, leftIcon: SupportIcon, title: 'Support', navigate: 'Support'},
+  {id: 6, leftIcon: FaqIcon, title: 'Faq', navigate: 'Faq'},
+  {
+    id: 7,
+    leftIcon: TermAndConditionIcon,
+    title: 'Terms And Conditions',
+    navigate: 'TermsAndCondition',
+  },
+  {
+    id: 8,
+    leftIcon: PrivacyIcon,
+    title: 'Privacy',
+    navigate: 'PrivacyAndPolicy',
+  },
+  {
+    id: 9,
+    leftIcon: AskForLeaveIcon,
+    title: 'Ask For Leave',
+    navigate: 'AskForLeave',
+  },
+  {id: 10, leftIcon: LogoutIcon, title: 'Logout', navigate: 'EditProfile'},
 ];
 
 const ProfileHeader = () => (
@@ -72,13 +124,15 @@ const ProfileHeader = () => (
 );
 
 const OptionItem = ({item}: any) => (
-  <View style={styles.optionItem}>
+  <TouchableOpacity
+    style={styles.optionItem}
+    onPress={() => navigate(item.navigate)}>
     <View style={styles.optionLeft}>
       <item.leftIcon />
       <Text style={styles.optionText}>{item.title}</Text>
     </View>
     <RightIcon />
-  </View>
+  </TouchableOpacity>
 );
 
 const AccountScreen = () => {

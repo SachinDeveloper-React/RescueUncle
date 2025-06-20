@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../constants';
 import {ordersList} from '../../../constants/orders';
-import {CustomOrdersList} from '../../../components';
+import {CustomDatePickerModal, CustomOrdersList} from '../../../components';
 import {ArrowDownIcon} from '../../../assets';
 import {moderateScale} from '../../../utils/scale';
+
+import {formatDate} from '../../../utils';
+import {DateType} from 'react-native-ui-datepicker';
 
 const OrdersScreen = () => {
   const tabs = ['WH', 'Customer', 'SC'];
   const [selectedTab, setSelectedTab] = useState('Customer');
+
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<DateType>(new Date());
 
   const handlePress = (tab: string) => {
     setSelectedTab(tab);
@@ -35,10 +41,21 @@ const OrdersScreen = () => {
           ))}
         </View>
 
-        <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>05/06/2025</Text>
+        <TouchableOpacity
+          style={styles.dateContainer}
+          onPress={() => setIsDatePickerVisible(true)}>
+          <Text style={styles.dateText}>
+            {selectedDate ? formatDate(selectedDate as any) : 'Select Date'}
+          </Text>
           <ArrowDownIcon />
-        </View>
+        </TouchableOpacity>
+        <CustomDatePickerModal
+          visible={isDatePickerVisible}
+          onClose={() => setIsDatePickerVisible(false)}
+          date={selectedDate}
+          onSelect={date => setSelectedDate(date)}
+          title="Pick Order Date"
+        />
       </View>
 
       <CustomOrdersList ordersList={ordersList} />
@@ -105,5 +122,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     transform: [{rotate: '270deg'}],
     marginTop: moderateScale(6),
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    padding: moderateScale(16),
+    borderRadius: moderateScale(10),
+    width: '90%',
+    alignSelf: 'center',
   },
 });

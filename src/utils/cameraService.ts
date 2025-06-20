@@ -1,5 +1,5 @@
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
-import {CameraOptions, launchCamera} from 'react-native-image-picker';
+import {Asset, CameraOptions, launchCamera} from 'react-native-image-picker';
 
 const requestCameraPermission = async (): Promise<boolean> => {
   if (Platform.OS === 'android') {
@@ -23,7 +23,7 @@ const requestCameraPermission = async (): Promise<boolean> => {
   return true;
 };
 
-export const openCamera = async (): Promise<string | null> => {
+export const openCamera = async (): Promise<Asset | null> => {
   const hasPermission = await requestCameraPermission();
   if (!hasPermission) {
     Alert.alert(
@@ -47,7 +47,7 @@ export const openCamera = async (): Promise<string | null> => {
   }
 
   if (result.assets && result.assets.length > 0) {
-    return result.assets[0].uri || null;
+    return result.assets[0] || null;
   } else if (result.errorCode) {
     Alert.alert('Error', result.errorMessage || 'Failed to capture image');
   }

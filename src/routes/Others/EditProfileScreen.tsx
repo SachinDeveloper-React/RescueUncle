@@ -77,7 +77,7 @@ const PersonalInformationScreen = () => {
             <BackArrowIcon />
           </TouchableOpacity>
           <Text style={[typography.heading, {fontSize: scaleFont(22)}]}>
-            Personal Information
+            Edit Personal Information
           </Text>
           <Text
             style={[

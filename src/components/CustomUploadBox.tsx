@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {CameraIcon, CrossIcon} from '../assets';
+import {CameraIcon, CrossIcon, PreviewIcon} from '../assets';
 import {colors, spacing, typography} from '../constants';
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
   imageUri: string | null;
   onPress: () => void;
   onRemoveImage?: () => void;
+  onPreviewPress?: () => void;
   uploadText?: string;
 };
 
@@ -25,6 +26,7 @@ const UploadBox: React.FC<Props> = ({
   onPress,
   onRemoveImage,
   uploadText = 'Upload Photo',
+  onPreviewPress,
 }) => {
   return (
     <TouchableOpacity
@@ -59,6 +61,19 @@ const UploadBox: React.FC<Props> = ({
           )}
         </View>
       </View>
+
+      {/* {imageUri && ( */}
+      <TouchableOpacity
+        onPress={onPreviewPress}
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 9999999,
+        }}>
+        <PreviewIcon />
+      </TouchableOpacity>
+      {/* )} */}
     </TouchableOpacity>
   );
 };
@@ -75,6 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   content: {
     flex: 1,

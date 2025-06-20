@@ -1,19 +1,16 @@
-import React, {useState} from 'react';
+import React, {useMemo} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Image,
   PixelRatio,
-  Alert,
 } from 'react-native';
 import Joi from 'joi';
 import CustomTextInput from '../../components/CustomTextInput';
 import {colors, typography} from '../../constants';
-import {useResponsiveScale} from '../../hooks';
+import {useFormManager, useResponsiveScale} from '../../hooks';
 import {AuthLayout} from '../../layout';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {CustomButton} from '../../components';
 import {BackArrowIcon} from '../../assets';
 import {goBack} from '../../navigation';
@@ -29,46 +26,37 @@ const vehicleInfoSchema = Joi.object({
 
 const VehicleDetailsScreen = () => {
   const {scale, verticalScale, scaleFont} = useResponsiveScale();
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [form, setForm] = useState({
-    registrationNumber: '',
-    chassisNumber: '',
-    engineNumber: '',
-    ownerName: '',
-    vehicleName: '',
-  });
+  const {form, errors, inputRefs, handleChange, focusNext, handleSubmit} =
+    useFormManager({
+      initialForm: {
+        registrationNumber: '',
+        chassisNumber: '',
+        engineNumber: '',
+        ownerName: '',
+        vehicleName: '',
+      },
+      schema: vehicleInfoSchema,
+      onSubmit: async data => {
+        // You can add an API call here:
+        // await api.submitVehicleDetails(data);
+        console.log('Form data:', data);
+      },
+    });
 
-  const handleImagePick = async () => {
-    const result = await launchImageLibrary({mediaType: 'photo', quality: 0.5});
-    if (result.assets && result.assets.length > 0) {
-      setProfileImage(result.assets[0].uri || null);
-    }
-  };
-
-  const handleChange = (key: string, value: string) => {
-    setForm(prev => ({...prev, [key]: value}));
-  };
-
-  const handleSubmit = () => {
-    const {error} = vehicleInfoSchema.validate(form, {abortEarly: false});
-    if (error) {
-      const errorObj: Record<string, string> = {};
-      error.details.forEach(detail => {
-        const key = detail.path[0] as string;
-        errorObj[key] = detail.message;
-      });
-      setErrors(errorObj);
-      return;
-    }
-
-    setErrors({});
-    Alert.alert('Success', 'Vehicle details submitted successfully!');
-  };
+  const fields = useMemo(
+    () => ({
+      registrationNumber: 'Registration Number',
+      chassisNumber: 'Chassis Number',
+      engineNumber: 'Engine Number',
+      ownerName: 'Owner Name',
+      vehicleName: 'Vehicle Name',
+    }),
+    [],
+  );
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <AuthLayout keyboardVerticalOffset={0}>
+      <AuthLayout>
         <View style={[styles.formContainer, {paddingHorizontal: scale(16)}]}>
           <TouchableOpacity onPress={goBack}>
             <BackArrowIcon />
@@ -84,22 +72,22 @@ const VehicleDetailsScreen = () => {
             Enter the details below so we can get to know and serve you better
           </Text>
 
-          {Object.entries({
-            registrationNumber: 'Registration Number',
-            chassisNumber: 'Chassis Number',
-            engineNumber: 'Engine Number',
-            ownerName: 'Owner Name',
-            vehicleName: 'Vehicle Name',
-          }).map(([key, label]) => (
+          {Object.entries(fields).map(([key, label]) => (
             <View key={key} style={{marginBottom: 12}}>
               <Text style={{marginBottom: 6}}>{label}</Text>
-              <CustomTextInput
-                placeholder={label}
-                value={form[key as keyof typeof form]}
-                onChangeText={text => handleChange(key, text)}
-                keyboardType="default"
-                accessibilityLabel={label}
-              />
+              {inputRefs[key] && (
+                <CustomTextInput
+                  ref={inputRefs[key]}
+                  placeholder={label}
+                  value={form[key as keyof typeof form]}
+                  onChangeText={text => handleChange(key, text)}
+                  keyboardType="default"
+                  accessibilityLabel={label}
+                  returnKeyType={key === 'vehicleName' ? 'done' : 'next'}
+                  onSubmitEditing={() => focusNext(key)}
+                />
+              )}
+
               {errors[key] && (
                 <Text style={styles.errorText}>{errors[key]}</Text>
               )}

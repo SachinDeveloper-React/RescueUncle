@@ -2,14 +2,16 @@ import React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
 type Props = {
+  width?: number;
+  height?: number;
   onPress?: () => void;
 };
 
-const CrossIcon = ({onPress}: Props) => {
+const CrossIcon = ({onPress, height = 24, width = 24}: Props) => {
   return (
     <Svg
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       onPress={onPress}>
