@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomButton, CustomUploadBox} from '../../components';
-import {spacing} from '../../constants';
+import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openCamera} from '../../utils';
 import EnhancedImageViewing from 'react-native-image-viewing';
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#2B2E35',
+    color: colors.textPrimary,
   },
   subtitle: {
     fontSize: 16,

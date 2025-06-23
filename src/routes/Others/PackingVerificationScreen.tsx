@@ -5,7 +5,7 @@ import {
   CustomUploadBox,
   CustomVideoPreviewModal,
 } from '../../components';
-import {spacing} from '../../constants';
+import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openVideoCamera} from '../../utils';
 
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#2B2E35',
+    color: colors.textPrimary,
   },
   subtitle: {
     fontSize: 16,

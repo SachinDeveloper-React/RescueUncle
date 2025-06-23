@@ -1,16 +1,10 @@
 import React from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
 import {Order} from '../@types/order';
 import {ArrowDownIcon} from '../assets';
 import {moderateScale} from '../utils/scale';
 import {navigate} from '../navigation';
+import {colors} from '../constants';
 
 type Props = {
   ordersList: Order[];
@@ -73,7 +67,7 @@ const CustomOrdersList = ({ordersList}: Props) => {
         </View>
       </View>
       <View style={styles.arrowIcon}>
-        <ArrowDownIcon />
+        <ArrowDownIcon color={colors.primary} />
       </View>
     </Pressable>
   );
@@ -121,12 +115,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   label: {
-    color: '#2B2E35',
+    color: colors.textPrimary,
     fontSize: moderateScale(16),
     fontWeight: '500',
   },
   orderNumber: {
-    color: '#2B2E35',
+    color: colors.textPrimary,
     fontSize: moderateScale(16),
     fontWeight: '400',
   },

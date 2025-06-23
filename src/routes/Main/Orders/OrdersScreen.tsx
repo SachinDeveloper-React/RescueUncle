@@ -47,7 +47,7 @@ const OrdersScreen = () => {
           <Text style={styles.dateText}>
             {selectedDate ? formatDate(selectedDate as any) : 'Select Date'}
           </Text>
-          <ArrowDownIcon />
+          <ArrowDownIcon color={colors.primary} />
         </TouchableOpacity>
         <CustomDatePickerModal
           visible={isDatePickerVisible}
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   activeTab: {
-    backgroundColor: 'red',
+    backgroundColor: colors.primary,
     borderRadius: 999,
   },
   tabText: {

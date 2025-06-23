@@ -1,19 +1,34 @@
 import React from 'react';
 import Svg, {Path} from 'react-native-svg';
+import {colors} from '../../constants';
 
-type Props = {};
-
-const LogoutIcon = (props: Props) => {
+type Props = {
+  onPress?: () => void;
+  width?: number;
+  height?: number;
+  color?: string;
+};
+const LogoutIcon = ({
+  color = colors.primary,
+  height = 24,
+  onPress,
+  width = 24,
+}: Props) => {
   return (
-    <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <Svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      onPress={onPress}>
       <Path
         d="M8 18.9282C9.21615 19.6303 10.5957 20 12 20C13.4043 20 14.7838 19.6303 16 18.9282C17.2162 18.2261 18.2261 17.2162 18.9282 16C19.6303 14.7838 20 13.4043 20 12C20 10.5957 19.6303 9.21615 18.9282 8C18.2261 6.78385 17.2162 5.77394 16 5.0718C14.7838 4.36965 13.4043 4 12 4C10.5957 4 9.21615 4.36965 8 5.0718"
-        stroke="#FF5963"
+        stroke={color}
         strokeWidth="1.5"
       />
       <Path
         d="M2 12L1.41435 11.5315L1.03953 12L1.41435 12.4685L2 12ZM11 12.75C11.4142 12.75 11.75 12.4142 11.75 12C11.75 11.5858 11.4142 11.25 11 11.25V12.75ZM5.41435 6.53148L1.41435 11.5315L2.58565 12.4685L6.58565 7.46852L5.41435 6.53148ZM1.41435 12.4685L5.41435 17.4685L6.58565 16.5315L2.58565 11.5315L1.41435 12.4685ZM2 12.75H11V11.25H2V12.75Z"
-        fill="#FF5963"
+        fill={color}
       />
     </Svg>
   );

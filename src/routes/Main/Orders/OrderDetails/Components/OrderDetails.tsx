@@ -1,4 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
+import {colors} from '../../../../../constants';
 
 const OrderDetails = () => (
   <View style={[styles.subRow, styles.orderDetails]}>
@@ -24,20 +25,20 @@ const styles = StyleSheet.create({
   orderDetails: {
     padding: 16,
     borderBottomWidth: 0.5,
-    borderColor: '#4A5568',
+    borderColor: colors.inputBorder,
   },
   orderInfo: {
     fontSize: 14,
     color: '#000',
   },
   statusBadge: {
-    backgroundColor: '#FFD4D4',
+    backgroundColor: colors.lightPrimary,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
   },
   statusText: {
-    color: '#FF5C5C',
+    color: colors.primary,
     fontSize: 12,
   },
 });

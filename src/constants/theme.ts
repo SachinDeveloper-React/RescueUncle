@@ -3,12 +3,18 @@ import {Dimensions} from 'react-native';
 export const {width, height} = Dimensions.get('window');
 
 export const colors = {
-  primary: '#FF5963',
+  primary: '#184ea3',
+  lightPrimary: '#EAEFF7',
   textPrimary: '#2B2E35',
   inputBorder: '#969AA4',
   inputBackground: '#F5F5F5',
   white: '#FFFFFF',
   black: '#000000',
+  shading: {
+    stopColor: '#184EA3',
+    stopColor2: '#577EBC',
+    stopColor3: '#96AFD5',
+  },
 };
 
 export const spacing = {

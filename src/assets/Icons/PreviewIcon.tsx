@@ -1,12 +1,17 @@
 // components/icons/PreviewIcon.tsx
 import React from 'react';
 import Svg, {Path} from 'react-native-svg';
+import {colors} from '../../constants';
 type Props = {
   onPress?: () => void;
   color?: string;
   size?: number;
 };
-const PreviewIcon = ({size = 24, color = '#2B2E35', onPress}: Props) => (
+const PreviewIcon = ({
+  size = 24,
+  color = colors.textPrimary,
+  onPress,
+}: Props) => (
   <Svg
     width={size}
     height={size}

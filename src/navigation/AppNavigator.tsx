@@ -54,7 +54,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: '',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={DeviceExteriorScreen}
       />
@@ -65,7 +65,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: '',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={DeviceSidesScreen}
       />
@@ -76,7 +76,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: '',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={PackingVerificationScreen}
       />
@@ -87,7 +87,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: '',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={OtpVerificationScreen}
       />
@@ -98,7 +98,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: '',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={PickupConfirmationScreen}
       />
@@ -109,7 +109,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: '',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={EditProfileScreen}
       />
@@ -131,7 +131,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Refer & Earn',
           headerShadowVisible: false,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={ReferAndEarnScreen}
       />
@@ -143,7 +143,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Support',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={SupportScreen}
       />
@@ -154,7 +154,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'FAQ',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={FaqScreen}
       />
@@ -165,7 +165,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Terms And Condition',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={TermsAndConditionScreen}
       />
@@ -177,7 +177,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Privacy & Policy',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={PrivacyAndPolicyScreen}
       />
@@ -188,7 +188,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Ask For Leave',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={AskForLeaveScreen}
       />
@@ -199,7 +199,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Transactions History',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={TransactionScreen}
       />
@@ -210,7 +210,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Order History',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={OrderHistoryScreen}
       />
@@ -221,7 +221,7 @@ const AppNavigator = (props: Props) => {
           headerBackButtonDisplayMode: 'minimal',
           headerTitle: 'Earnings',
           headerShadowVisible: true,
-          headerTintColor: '#2B2E35',
+          headerTintColor: colors.textPrimary,
         })}
         component={EarningsScreen}
       />

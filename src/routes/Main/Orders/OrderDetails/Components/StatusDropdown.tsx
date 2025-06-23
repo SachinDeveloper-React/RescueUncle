@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {Dispatch, SetStateAction} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {colors} from '../../../../../constants';
 
 type Props = {
   statusOpen: boolean;
@@ -40,7 +41,7 @@ const StatusDropdown = ({
           setItems={setStatusItems}
           placeholder="Select an option"
           style={styles.dropdown}
-          dropDownContainerStyle={{borderColor: '#FF5C5C'}}
+          dropDownContainerStyle={{borderColor: colors.primary}}
           listMode="SCROLLVIEW"
         />
       </View>
@@ -53,11 +54,11 @@ export default StatusDropdown;
 const styles = StyleSheet.create({
   updateLabel: {
     marginVertical: 8,
-    color: '#FF5C5C',
+    color: colors.primary,
     fontWeight: 'bold',
   },
   dropdown: {
     marginVertical: 16,
-    borderColor: '#FF5C5C',
+    borderColor: colors.primary,
   },
 });

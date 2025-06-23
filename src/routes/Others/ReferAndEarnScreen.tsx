@@ -26,7 +26,7 @@ const ReferAndEarnScreen: React.FC = () => {
       bounces={false}
       contentContainerStyle={{paddingBottom: verticalScale(30)}}>
       <LinearGradient
-        colors={[colors.primary, '#FB9A4D']}
+        colors={[colors.primary, colors.lightPrimary]}
         style={styles.gradientContainer}>
         <View style={styles.headerContent}>
           <View style={styles.textSection}>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   referButton: {
-    backgroundColor: '#2B2E35',
+    backgroundColor: colors.textPrimary,
     height: verticalScale(52),
     justifyContent: 'center',
     alignItems: 'center',
@@ -159,12 +159,12 @@ const styles = StyleSheet.create({
   stepText: {
     fontSize: scale(16),
     fontWeight: '400',
-    color: '#2B2E35',
+    color: colors.textPrimary,
   },
   codeContainer: {
     marginTop: verticalScale(20),
     marginHorizontal: scale(60),
-    backgroundColor: '#FFECEC',
+    backgroundColor: colors.lightPrimary,
     borderWidth: 1,
     borderStyle: 'dotted',
     borderRadius: scale(8),
@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   codeLabel: {
-    color: '#2B2E35',
+    color: colors.textPrimary,
     fontSize: scale(16),
     fontWeight: '400',
   },
   codeText: {
-    color: '#FF5963',
+    color: colors.primary,
     fontSize: scale(24),
     fontWeight: '600',
   },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   copyText: {
-    color: '#2B2E35',
+    color: colors.textPrimary,
     fontSize: scale(18),
     fontWeight: '500',
     textAlign: 'center',

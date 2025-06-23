@@ -10,6 +10,8 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Dropdown} from 'react-native-element-dropdown';
 import {scale, verticalScale} from 'react-native-size-matters';
+import {colors} from '../../constants';
+import {CustomButton} from '../../components';
 
 const issueOptions = [
   {label: 'App not working', value: 'app_not_working'},
@@ -67,9 +69,11 @@ const SupportScreen = () => {
         placeholderTextColor="#999"
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+      <CustomButton
+        title="Submit"
+        onPress={handleSubmit}
+        style={styles.button}
+      />
     </KeyboardAwareScrollView>
   );
 };
@@ -79,7 +83,7 @@ export default SupportScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   scrollContainer: {
     padding: scale(20),
@@ -129,15 +133,9 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   button: {
-    backgroundColor: '#FF5B62',
     marginTop: 30,
     borderRadius: 30,
     paddingVertical: 14,
     alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 18,
   },
 });

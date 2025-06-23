@@ -7,6 +7,7 @@ import {
   UserIcon,
 } from '../../../../../assets';
 import AddressRow from './AddressRow';
+import {colors} from '../../../../../constants';
 
 type Props = {};
 
@@ -44,11 +45,10 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    // backgroundColor: 'red',
     gap: 8,
   },
   label: {
-    color: '#2B2E35',
+    color: colors.textPrimary,
     fontWeight: 'bold',
     fontSize: 16,
   },

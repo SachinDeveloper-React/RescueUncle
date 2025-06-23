@@ -27,7 +27,7 @@ const CustomTabLabel = ({
     <View
       style={{
         width: TAB_WIDTH,
-        backgroundColor: focused ? 'red' : 'transparent',
+        backgroundColor: focused ? colors.primary : 'transparent',
         paddingVertical: scale(6),
         flexDirection: 'row',
         alignItems: 'center',

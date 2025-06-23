@@ -1,6 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, useWindowDimensions} from 'react-native';
 import RenderHTML from 'react-native-render-html';
+import {colors} from '../../constants';
 
 const htmlContent = `
   <h1>Terms & Conditions</h1>
@@ -26,14 +27,14 @@ const TermsAndConditionScreen: React.FC = () => {
       fontSize: 24,
       fontWeight: 'bold/',
       marginBottom: 12,
-      color: '#2B2E35',
+      color: colors.textPrimary,
     },
     h2: {
       fontSize: 20,
       fontWeight: '600',
       marginTop: 16,
       marginBottom: 8,
-      color: '#FF4651',
+      color: colors.primary,
     },
     p: {
       fontSize: 16,
@@ -50,7 +51,7 @@ const TermsAndConditionScreen: React.FC = () => {
         source={{html: htmlContent}}
         baseStyle={{
           fontSize: 16,
-          color: '#2B2E35',
+          color: colors.textPrimary,
           lineHeight: 24,
         }}
         tagsStyles={tagsStyles as any}

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {SafeAreaView, View, StyleSheet, Text} from 'react-native';
 import {CustomButton, CustomUploadBox} from '../../components';
-import {spacing} from '../../constants';
+import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openCamera} from '../../utils';
 import ImageView from 'react-native-image-viewing';
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#2B2E35',
+    color: colors.textPrimary,
   },
   subtitle: {
     fontSize: 16,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     marginBottom: spacing.md,
-    color: '#2B2E35',
+    color: colors.textPrimary,
     alignSelf: 'center',
   },
   previewItem: {

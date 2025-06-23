@@ -62,18 +62,18 @@ const UploadBox: React.FC<Props> = ({
         </View>
       </View>
 
-      {/* {imageUri && ( */}
-      <TouchableOpacity
-        onPress={onPreviewPress}
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 9999999,
-        }}>
-        <PreviewIcon />
-      </TouchableOpacity>
-      {/* )} */}
+      {imageUri && (
+        <TouchableOpacity
+          onPress={onPreviewPress}
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 9999999,
+          }}>
+          <PreviewIcon />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 };

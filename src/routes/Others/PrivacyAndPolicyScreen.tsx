@@ -7,6 +7,7 @@ import {
   Text,
 } from 'react-native';
 import RenderHTML from 'react-native-render-html';
+import {colors} from '../../constants';
 
 const htmlContent = `
   <h1 style="font-weight:bold">Privacy & Policy</h1>
@@ -31,16 +32,16 @@ const PrivacyAndPolicyScreen: React.FC = () => {
   const tagsStyles = {
     h1: {
       fontSize: 24,
-      fontWeight: 'bold/',
+      fontWeight: 'bold',
       marginBottom: 12,
-      color: '#2B2E35',
+      color: colors.textPrimary,
     },
     h2: {
       fontSize: 20,
       fontWeight: '600',
       marginTop: 16,
       marginBottom: 8,
-      color: '#FF4651',
+      color: colors.primary,
     },
     p: {
       fontSize: 16,

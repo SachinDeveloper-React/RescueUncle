@@ -1,10 +1,7 @@
 import React from 'react';
 import {Modal, View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
-import DateTimePicker, {
-  DateType,
-  useDefaultStyles,
-} from 'react-native-ui-datepicker';
+import DateTimePicker, {DateType} from 'react-native-ui-datepicker';
 import {colors} from '../constants';
 
 type Props = {
@@ -22,8 +19,6 @@ const CustomDatePickerModal: React.FC<Props> = ({
   onSelect,
   title,
 }) => {
-  const defaultStyles = useDefaultStyles();
-
   return (
     <Modal
       visible={visible}
@@ -38,7 +33,15 @@ const CustomDatePickerModal: React.FC<Props> = ({
             mode="single"
             date={date}
             onChange={({date}) => onSelect(date)}
-            styles={defaultStyles}
+            styles={{
+              selected: {
+                backgroundColor: colors.primary,
+                borderRadius: 8,
+              },
+              selected_label: {
+                color: colors.white,
+              },
+            }}
           />
 
           <TouchableOpacity style={styles.doneButton} onPress={onClose}>

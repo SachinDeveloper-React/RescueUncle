@@ -1,15 +1,15 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  TouchableOpacity,
   SafeAreaView,
   Platform,
   ScrollView,
 } from 'react-native';
 import {DeliveryInfo, Header, OrderDetails, UserSection} from './Components';
 import {navigate} from '../../../../navigation';
+import {CustomButton} from '../../../../components';
+import {colors} from '../../../../constants';
 
 export default function OrderDetailScreen() {
   return (
@@ -24,11 +24,11 @@ export default function OrderDetailScreen() {
           <UserSection />
           <DeliveryInfo />
 
-          <TouchableOpacity
+          <CustomButton
+            title="Confirm Pickup"
             style={styles.confirmBtn}
-            onPress={() => navigate('DeviceExterior')}>
-            <Text style={styles.confirmText}>Confirm Pickup</Text>
-          </TouchableOpacity>
+            onPress={() => navigate('DeviceExterior')}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -41,13 +41,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    backgroundColor: '#fff',
-    // padding: 16,
+    backgroundColor: colors.white,
     margin: 16,
     borderRadius: 16,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: colors.black,
         shadowOffset: {
           width: 0,
           height: 2,
@@ -62,14 +61,13 @@ const styles = StyleSheet.create({
   },
 
   confirmBtn: {
-    backgroundColor: '#FF5C5C',
     padding: 14,
     borderRadius: 30,
     alignItems: 'center',
     margin: 16,
   },
   confirmText: {
-    color: 'white',
+    color: colors.white,
     fontWeight: 'bold',
     fontSize: 16,
   },

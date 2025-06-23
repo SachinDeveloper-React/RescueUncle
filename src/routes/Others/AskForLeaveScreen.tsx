@@ -15,6 +15,7 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomButton} from '../../components';
 import {CalendarIcon} from '../../assets';
+import {colors} from '../../constants';
 
 const LeaveRequestForm = () => {
   let today = new Date();
@@ -23,8 +24,8 @@ const LeaveRequestForm = () => {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [comments, setComments] = useState('');
-  const defaultStyles = useDefaultStyles();
   const [selected, setSelected] = useState<DateType>();
+  const defaultStyles = useDefaultStyles();
 
   const daysOptions = [
     {label: '1 Day', value: '1'},
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: scale(18),
     fontWeight: 'regular',
-    color: '#2B2E35',
+    color: colors.textPrimary,
     marginBottom: verticalScale(20),
   },
   row: {
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
   dropdown: {
     flex: 1.2,
     borderWidth: 1,
-    borderColor: '#FF5B62',
+    borderColor: colors.inputBorder,
     borderRadius: scale(24),
     paddingHorizontal: scale(12),
     height: verticalScale(44),
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: scale(20),
     height: scale(20),
-    tintColor: '#FF5B62',
+    tintColor: colors.primary,
   },
   dateText: {
     fontSize: scale(14),

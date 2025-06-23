@@ -80,7 +80,7 @@ const options = [
     title: 'Ask For Leave',
     navigate: 'AskForLeave',
   },
-  {id: 10, leftIcon: LogoutIcon, title: 'Logout', navigate: 'EditProfile'},
+  {id: 10, leftIcon: LogoutIcon, title: 'Logout', navigate: ''},
 ];
 
 const ProfileHeader = () => (
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     height: moderateScale(93),
     borderRadius: moderateScale(93 / 2),
     borderWidth: 1,
-    borderColor: '#FB9A4D',
+    borderColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: moderateScale(12),
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     fontSize: moderateScale(16),
-    color: '#2B2E35',
+    color: colors.textPrimary,
   },
   ratingText: {
     color: '#051126',
@@ -237,6 +237,6 @@ const styles = StyleSheet.create({
   optionText: {
     paddingHorizontal: moderateScale(8),
     fontSize: moderateScale(16),
-    color: '#2B2E35',
+    color: colors.textPrimary,
   },
 });

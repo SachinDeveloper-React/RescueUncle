@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import StatusDropdown from './StatusDropdown';
 import {ClockIcon} from '../../../../../assets';
+import {colors} from '../../../../../constants';
 
 type Props = {};
 
@@ -51,20 +52,20 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   deliveryContainer: {
-    backgroundColor: '#FFECEC',
+    backgroundColor: colors.lightPrimary,
     borderRadius: 12,
     padding: 16,
     margin: 16,
   },
   deliveryTitle: {
     fontSize: 16,
-    color: '#FF5963',
+    color: colors.primary,
     fontWeight: 'medium',
     marginBottom: 4,
   },
   timeLeftBox: {
     // flex: 1,
-    borderColor: '#FF5C5C',
+    borderColor: colors.textPrimary,
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
@@ -77,18 +78,18 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   timeLeftLabel: {
-    color: '#FF5963',
+    color: colors.primary,
     fontWeight: 'bold',
     fontSize: 14,
   },
   boldText: {
     fontWeight: 'semibold',
     fontSize: 14,
-    color: '#57585A',
+    color: colors.textPrimary,
   },
   normalText: {
     fontSize: 14,
     fontWeight: 'medium',
-    color: '#57585A',
+    color: colors.textPrimary,
   },
 });
