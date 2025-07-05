@@ -15,6 +15,7 @@ export const colors = {
     stopColor2: '#577EBC',
     stopColor3: '#96AFD5',
   },
+  error: 'red',
 };
 
 export const spacing = {

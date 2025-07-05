@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {
-  Button,
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {colors} from '../../constants';
 import {RegistrationImage, RightIcon} from '../../assets';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList, navigate} from '../../navigation';
-import {useResponsiveScale} from '../../hooks';
+import {useDetailsForm, useResponsiveScale} from '../../hooks';
 
 const formSections = [
   {labal: 'Personal Information', navigate: 'PersonalInformation'},
@@ -23,8 +23,9 @@ const formSections = [
 const RegistrationCompleteScreen = ({
   navigation,
 }: NativeStackScreenProps<AuthStackParamList, 'RegistrationComplete'>) => {
-  const {scale, verticalScale, moderateScale, scaleFont} = useResponsiveScale();
-
+  const {scale, verticalScale, scaleFont} = useResponsiveScale();
+  const {fetchProfileDetails, fetchVehicleDetails, fetchBankDetails} =
+    useDetailsForm();
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
@@ -44,6 +45,15 @@ const RegistrationCompleteScreen = ({
     });
   }, [navigation]);
 
+  useEffect(() => {
+    (async () => {
+      await Promise.all([
+        fetchProfileDetails(),
+        fetchVehicleDetails(),
+        fetchBankDetails(),
+      ]);
+    })();
+  }, []);
   return (
     <SafeAreaView style={[styles.container, {}]}>
       <View style={styles.wrapper}>

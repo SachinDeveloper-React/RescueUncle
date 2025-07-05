@@ -5,66 +5,40 @@ import {
   View,
   TouchableOpacity,
   PixelRatio,
-  Alert,
 } from 'react-native';
-import Joi from 'joi';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomTextInput from '../../components/CustomTextInput';
 import {colors, typography} from '../../constants';
-import {useFormManager, useResponsiveScale} from '../../hooks';
+import {useDetailsForm, useFormManager, useResponsiveScale} from '../../hooks';
 import {AuthLayout} from '../../layout';
 import {CustomButton} from '../../components';
 import {goBack} from '../../navigation';
 import {BackArrowIcon} from '../../assets';
-import {SafeAreaView} from 'react-native-safe-area-context';
-
-const personalInfoSchema = Joi.object({
-  fullName: Joi.string().min(2).required(),
-  gender: Joi.string().valid('Male', 'Female', 'Other').required(),
-  primaryMobile: Joi.string().length(10).pattern(/^\d+$/).required(),
-  emergencyName: Joi.string().min(2).required(),
-  emergencyMobile: Joi.string().length(10).pattern(/^\d+$/).required(),
-  secondaryEmergencyName: Joi.string().allow('').optional(),
-  secondaryEmergencyMobile: Joi.string()
-    .length(10)
-    .pattern(/^\d+$/)
-    .allow('')
-    .optional(),
-  bloodGroup: Joi.string().required(),
-});
+import {useDetailsFormStore} from '../../store';
+import {personalInfoSchema} from '../../validations';
 
 const PersonalInformationScreen = () => {
-  const {scale, verticalScale, scaleFont} = useResponsiveScale();
-
+  const {scale, scaleFont} = useResponsiveScale();
+  const {personalDetails} = useDetailsFormStore();
+  const {state, updateProfileDetail} = useDetailsForm();
   const {form, errors, inputRefs, handleChange, focusNext, handleSubmit} =
     useFormManager({
-      initialForm: {
-        fullName: '',
-        gender: '',
-        primaryMobile: '',
-        emergencyName: '',
-        emergencyMobile: '',
-        secondaryEmergencyName: '',
-        secondaryEmergencyMobile: '',
-        bloodGroup: '',
-      },
+      initialForm: personalDetails,
       schema: personalInfoSchema,
       onSubmit: async data => {
-        // Simulated submit logic
-        console.log('Personal info submitted:', data);
-        Alert.alert('Success', 'Form submitted successfully!');
+        await updateProfileDetail(data);
       },
     });
 
   const fields = useMemo(
     () => ({
-      fullName: 'Full Name',
+      full_name: 'Full Name',
       gender: 'Gender',
-      primaryMobile: 'Primary Mobile Number',
-      emergencyName: 'Emergency Contact Name',
-      emergencyMobile: 'Emergency Contact Number',
-      secondaryEmergencyName: 'Secondary Emergency Contact Name (Optional)',
-      secondaryEmergencyMobile: 'Secondary Emergency Contact Number (Optional)',
-      bloodGroup: 'Blood Group',
+      emergency_name_1: 'Emergency Contact Name',
+      emergency_contact_1: 'Emergency Contact Number',
+      emergency_name_2: 'Secondary Emergency Contact Name (Optional)',
+      emergency_contact_2: 'Secondary Emergency Contact Number (Optional)',
+      blood_group: 'Blood Group',
     }),
     [],
   );
@@ -111,7 +85,11 @@ const PersonalInformationScreen = () => {
             </View>
           ))}
 
-          <CustomButton title="Submit" onPress={handleSubmit} />
+          <CustomButton
+            title="Submit"
+            onPress={handleSubmit}
+            loading={state.profileUpdate.loading}
+          />
         </View>
       </AuthLayout>
     </SafeAreaView>

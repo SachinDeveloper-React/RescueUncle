@@ -6,50 +6,43 @@ import {
   TouchableOpacity,
   PixelRatio,
 } from 'react-native';
-import Joi from 'joi';
-import CustomTextInput from '../../components/CustomTextInput';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors, typography} from '../../constants';
-import {useFormManager, useResponsiveScale} from '../../hooks';
+import {useDetailsForm, useFormManager, useResponsiveScale} from '../../hooks';
 import {AuthLayout} from '../../layout';
-import {CustomButton} from '../../components';
+import {CustomButton, CustomTextInput} from '../../components';
 import {BackArrowIcon} from '../../assets';
 import {goBack} from '../../navigation';
-import {SafeAreaView} from 'react-native-safe-area-context';
-
-const vehicleInfoSchema = Joi.object({
-  registrationNumber: Joi.string().required().label('Registration Number'),
-  chassisNumber: Joi.string().required().label('Chassis Number'),
-  engineNumber: Joi.string().required().label('Engine Number'),
-  ownerName: Joi.string().required().label('Owner Name'),
-  vehicleName: Joi.string().required().label('Vehicle Name'),
-});
+import {useDetailsFormStore} from '../../store';
+import {vehicleInfoSchema} from '../../validations';
 
 const VehicleDetailsScreen = () => {
-  const {scale, verticalScale, scaleFont} = useResponsiveScale();
+  const {scale, scaleFont} = useResponsiveScale();
+  const {state, updateVehicleDetail} = useDetailsForm();
+  const {vehicleDetails} = useDetailsFormStore();
+
   const {form, errors, inputRefs, handleChange, focusNext, handleSubmit} =
     useFormManager({
-      initialForm: {
-        registrationNumber: '',
-        chassisNumber: '',
-        engineNumber: '',
-        ownerName: '',
-        vehicleName: '',
-      },
+      initialForm: vehicleDetails,
       schema: vehicleInfoSchema,
       onSubmit: async data => {
-        // You can add an API call here:
-        // await api.submitVehicleDetails(data);
-        console.log('Form data:', data);
+        await updateVehicleDetail({
+          Chassis_number: data.Chassis_number,
+          engine_number: data.engine_number,
+          owner_name: data.owner_name,
+          vehicle_name: data.vehicle_name,
+          vehicle_registration_number: data.vehicle_registration_number,
+        });
       },
     });
 
   const fields = useMemo(
     () => ({
-      registrationNumber: 'Registration Number',
-      chassisNumber: 'Chassis Number',
-      engineNumber: 'Engine Number',
-      ownerName: 'Owner Name',
-      vehicleName: 'Vehicle Name',
+      vehicle_registration_number: 'Registration Number',
+      Chassis_number: 'Chassis Number',
+      engine_number: 'Engine Number',
+      owner_name: 'Owner Name',
+      vehicle_name: 'Vehicle Name',
     }),
     [],
   );
@@ -67,7 +60,7 @@ const VehicleDetailsScreen = () => {
           <Text
             style={[
               typography.body,
-              {fontSize: scaleFont(14), color: '#57585A'},
+              {fontSize: scaleFont(14), color: colors.textPrimary},
             ]}>
             Enter the details below so we can get to know and serve you better
           </Text>
@@ -94,7 +87,12 @@ const VehicleDetailsScreen = () => {
             </View>
           ))}
 
-          <CustomButton title="Submit" onPress={handleSubmit} />
+          <CustomButton
+            title="Submit"
+            loading={state.vehicleUpdate.loading}
+            disabled={state.vehicleUpdate.loading}
+            onPress={handleSubmit}
+          />
         </View>
       </AuthLayout>
     </SafeAreaView>

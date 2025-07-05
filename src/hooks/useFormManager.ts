@@ -1,6 +1,6 @@
 import {useRef, useState, useCallback} from 'react';
 import Joi from 'joi';
-import {TextInput} from 'react-native';
+import {Alert, TextInput} from 'react-native';
 import React from 'react';
 
 type FormManagerProps<T extends Record<string, any>> = {
@@ -52,6 +52,7 @@ export default function useFormManager<T extends Record<string, any>>({
         const key = detail.path[0] as keyof T;
         newErrors[key] = detail.message;
       });
+      console.log('newErrors', newErrors);
       setErrors(newErrors);
       setServerError(null);
       return;

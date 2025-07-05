@@ -131,13 +131,25 @@
 // export default App;
 
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {AppNavigationContainer} from './src/navigation';
+import {requestLocationPermission} from './src/utils';
 
 type Props = {};
 
 const App = (props: Props) => {
+  const initLocation = async () => {
+    const granted = await requestLocationPermission();
+    if (granted) {
+      console.log('User location:', granted);
+    } else {
+      console.log('Location permission denied');
+    }
+  };
+  useEffect(() => {
+    initLocation();
+  }, []);
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={'dark-content'} />

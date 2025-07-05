@@ -1,4 +1,5 @@
 export {
+  Bg,
   LoginVector,
   RegistrationImage,
   RightIcon,

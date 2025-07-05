@@ -1,32 +1,19 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import Joi from 'joi';
-import CustomTextInput from '../../components/CustomTextInput';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {typography} from '../../constants';
-import {useFormManager, useResponsiveScale} from '../../hooks';
+import {useDetailsForm, useFormManager, useResponsiveScale} from '../../hooks';
 import {AuthLayout} from '../../layout';
-import {CustomButton} from '../../components';
+import {CustomButton, CustomTextInput} from '../../components';
 import {BackArrowIcon} from '../../assets';
 import {goBack} from '../../navigation';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Toast from 'react-native-simple-toast';
-
-const bankAccountSchema = Joi.object({
-  bankName: Joi.string().required().label('Bank Name'),
-  accountNumber: Joi.string()
-    .pattern(/^\d+$/)
-    .min(9)
-    .max(18)
-    .required()
-    .label('Account Number'),
-  ifscCode: Joi.string()
-    // .pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/)
-    .required()
-    .label('IFSC Code'),
-});
+import {useDetailsFormStore} from '../../store';
+import {bankAccountSchema} from '../../validations';
 
 const BankAccountDetailsScreen = () => {
   const {scale, scaleFont} = useResponsiveScale();
+  const {bankDetails} = useDetailsFormStore();
+  const {state, updateBankDetail} = useDetailsForm();
   const {
     form,
     errors,
@@ -36,38 +23,28 @@ const BankAccountDetailsScreen = () => {
     focusNext,
     serverError,
   } = useFormManager({
-    initialForm: {
-      bankName: '',
-      accountNumber: '',
-      ifscCode: '',
-    },
+    initialForm: bankDetails,
     schema: bankAccountSchema,
     onSubmit: async data => {
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log('Submitted Data:', data);
-      } catch (error) {
-        console.log('error', error);
-        // Alert.alert('Error', 'Something went wrong during submission.');
-        Toast.showWithGravity(
-          'This is a long toast at the top.',
-          Toast.LONG,
-          Toast.TOP,
-        );
-      }
+      await updateBankDetail({
+        bank_name: data.bank_name,
+        account_number: data.account_number,
+        ifsc_code: data.ifsc_code,
+        account_holder_name: data.account_holder_name,
+        is_active: false,
+      });
     },
   });
 
   const fields = useMemo(
     () => ({
-      bankName: 'Bank Name',
-      accountNumber: 'Account Number',
-      ifscCode: 'IFSC Code',
+      bank_name: 'Bank Name',
+      account_number: 'Account Number',
+      ifsc_code: 'IFSC Code',
+      account_holder_name: 'Account Holder Name',
     }),
     [],
   );
-
-  console.log('serverError', serverError);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -115,7 +92,12 @@ const BankAccountDetailsScreen = () => {
             <Text style={styles.serverErrorText}>{serverError}</Text>
           )}
 
-          <CustomButton title="Submit" onPress={handleSubmit} />
+          <CustomButton
+            title="Submit"
+            onPress={handleSubmit}
+            loading={state.bankUpdate.loading}
+            disabled={state.bankUpdate.loading}
+          />
         </View>
       </AuthLayout>
     </SafeAreaView>

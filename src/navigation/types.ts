@@ -2,12 +2,20 @@ import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type AuthStackParamList = {
   Login: undefined;
-  Otp: undefined;
+  Otp: {
+    country_code: string;
+    user_mobile: string;
+    mobile_otp: string;
+  };
   RegistrationComplete: undefined;
+};
+
+export type ProfileStackParamList = {
   PersonalInformation: undefined;
   VehicleDetails: undefined;
   BankAccountDetails: undefined;
   EmergencyDetails: undefined;
+  RegistrationComplete: undefined;
 };
 
 export type BottomTabParamList = {
@@ -18,6 +26,7 @@ export type BottomTabParamList = {
 export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Main: NavigatorScreenParams<BottomTabParamList>;
+  Profile: NavigatorScreenParams<ProfileStackParamList>;
   OrderDetail: undefined;
   DeviceExterior: undefined;
   DeviceSides: undefined;

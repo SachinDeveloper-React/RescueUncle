@@ -1,5 +1,6 @@
 export {default as RegistrationImage} from './RegistrationImage';
 export {default as LoginVector} from './LoginVector';
+export {default as Bg} from './Bg';
 export {default as RightIcon} from './RightIcon';
 export {default as CameraIcon} from './Camera';
 export {default as BackArrowIcon} from './BackArrowIcon';

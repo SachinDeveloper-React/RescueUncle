@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,37 +6,28 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
-import {colors} from '../../constants';
-import CustomButton from '../../components/CustomButton';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '../../navigation';
-import {useResponsiveScale} from '../../hooks';
-
-const OTP_LENGTH = 6;
+import {colors} from '../../constants';
+import {CustomButton} from '../../components';
+import {AuthStackParamList, goBack} from '../../navigation';
+import {useAuth, useResponsiveScale} from '../../hooks';
 
 const OtpScreen = ({
   navigation,
+  route,
 }: NativeStackScreenProps<AuthStackParamList, 'Otp'>) => {
-  const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(''));
-  const inputs = useRef<TextInput[]>([]);
-
-  const {scale, verticalScale, moderateScale, scaleFont} = useResponsiveScale();
-
-  const handleChange = (text: string, index: number) => {
-    const newOtp = [...otp];
-    newOtp[index] = text;
-    setOtp(newOtp);
-    if (text && index < OTP_LENGTH - 1) {
-      inputs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyPress = (e: any, index: number) => {
-    if (e.nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
-      inputs.current[index - 1]?.focus();
-    }
-  };
+  const {user_mobile} = route.params;
+  const {scale, verticalScale, scaleFont} = useResponsiveScale();
+  const {
+    handleOtpChange,
+    handleKeyPress,
+    inputs,
+    auth,
+    handleValidateOtp,
+    error,
+  } = useAuth();
 
   return (
     <SafeAreaView style={[styles.container, {}]}>
@@ -52,19 +43,24 @@ const OtpScreen = ({
           ]}>
           Enter OTP to verify
         </Text>
-
-        <Text
-          style={[
-            styles.subtitle,
-            {fontSize: scaleFont(14), marginBottom: verticalScale(20)},
-          ]}>
-          A 6-digit OTP has been sent to your phone number{' '}
-          <Text style={styles.phone}>+91 9999988888 </Text>
-          <Text style={styles.change}>change</Text>
-        </Text>
-
+        <View>
+          <Text style={[styles.subtitle, {fontSize: scaleFont(14)}]}>
+            A 6-digit OTP has been sent to your phone number
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: verticalScale(10),
+            }}>
+            <Text style={styles.phone}>+91 {user_mobile} </Text>
+            <Pressable onPress={goBack}>
+              <Text style={styles.change}>change?</Text>
+            </Pressable>
+          </View>
+        </View>
         <View style={[styles.otpContainer, {marginBottom: verticalScale(24)}]}>
-          {otp.map((digit, index) => (
+          {auth.mobile_otp.map((digit, index) => (
             <TextInput
               key={index}
               style={[
@@ -79,7 +75,7 @@ const OtpScreen = ({
               keyboardType="number-pad"
               maxLength={1}
               ref={ref => (inputs.current[index] = ref! as any)}
-              onChangeText={text => handleChange(text, index)}
+              onChangeText={text => handleOtpChange(text, index)}
               onKeyPress={e => handleKeyPress(e, index)}
               value={digit}
               autoFocus={index === 0}
@@ -101,10 +97,9 @@ const OtpScreen = ({
           </Text>
         </TouchableOpacity>
 
-        <CustomButton
-          title="Verify OTP"
-          onPress={() => navigation.navigate('RegistrationComplete')}
-        />
+        <CustomButton title="Verify OTP" onPress={handleValidateOtp} />
+
+        <Text>{error.otp}</Text>
       </View>
     </SafeAreaView>
   );

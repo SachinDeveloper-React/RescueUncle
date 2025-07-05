@@ -1,17 +1,32 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import {colors, spacing} from '../constants';
 
 type Props = {
   title: string;
   onPress?: () => void;
   style?: ViewStyle;
+  loading?: boolean;
+  disabled?: boolean;
 };
 
-const CustomButton = ({title, onPress, style}: Props) => {
+const CustomButton = ({title, onPress, style, loading, disabled}: Props) => {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
+    <TouchableOpacity
+      style={[styles.button, style]}
+      onPress={onPress}
+      disabled={disabled}>
+      {loading ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Text style={styles.buttonText}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };

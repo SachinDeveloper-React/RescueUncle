@@ -22,209 +22,228 @@ import {
   TransactionScreen,
 } from '../routes';
 import {colors} from '../constants';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {useAuthStore} from '../store';
+import ProfileNavigator from './ProfileNavigator';
 
 type Props = {};
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigator = (props: Props) => {
+  const {isAuthenticated, isProfileCompleted} = useAuthStore();
+
   return (
     <RootStack.Navigator
       screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
-      <RootStack.Screen name="Auth" component={AuthNavigator} />
-      <RootStack.Screen name="Main" component={TabNavigator} />
-      <RootStack.Screen
-        name="OrderDetail"
-        options={() => ({
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Order Details',
-          headerBackground: () => (
-            <View style={styles.headerContainer}>
-              <View style={styles.curvedBackground} />
-            </View>
-          ),
-        })}
-        component={OrderDetailScreen}
-      />
-      <RootStack.Screen
-        name="DeviceExterior"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: '',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={DeviceExteriorScreen}
-      />
-      <RootStack.Screen
-        name="DeviceSides"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: '',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={DeviceSidesScreen}
-      />
-      <RootStack.Screen
-        name="PackingVerification"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: '',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={PackingVerificationScreen}
-      />
-      <RootStack.Screen
-        name="OtpVerification"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: '',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={OtpVerificationScreen}
-      />
-      <RootStack.Screen
-        name="PickupConfirmation"
-        options={() => ({
-          headerShown: false,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: '',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={PickupConfirmationScreen}
-      />
-      <RootStack.Screen
-        name="EditProfile"
-        options={() => ({
-          headerShown: false,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: '',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={EditProfileScreen}
-      />
-      <RootStack.Screen
-        name="ReferAndEarn"
-        options={() => ({
-          headerBackground: () => (
-            <View
-              style={[
-                styles.headerContainer,
-                {
-                  backgroundColor: colors.primary,
-                },
-              ]}>
-              <View style={styles.curvedBackground} />
-            </View>
-          ),
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Refer & Earn',
-          headerShadowVisible: false,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={ReferAndEarnScreen}
-      />
+      {!isAuthenticated ? (
+        <>
+          <RootStack.Screen name="Auth" component={AuthNavigator} />
+        </>
+      ) : (
+        <>
+          {!isProfileCompleted ? (
+            <RootStack.Screen name="Profile" component={ProfileNavigator} />
+          ) : (
+            <>
+              <RootStack.Screen name="Main" component={TabNavigator} />
+              <RootStack.Group>
+                <RootStack.Screen
+                  name="OrderDetail"
+                  options={() => ({
+                    headerShown: true,
+                    headerTitleAlign: 'center',
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Order Details',
+                    headerBackground: () => (
+                      <View style={styles.headerContainer}>
+                        <View style={styles.curvedBackground} />
+                      </View>
+                    ),
+                  })}
+                  component={OrderDetailScreen}
+                />
+                <RootStack.Screen
+                  name="DeviceExterior"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: '',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={DeviceExteriorScreen}
+                />
+                <RootStack.Screen
+                  name="DeviceSides"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: '',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={DeviceSidesScreen}
+                />
+                <RootStack.Screen
+                  name="PackingVerification"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: '',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={PackingVerificationScreen}
+                />
+                <RootStack.Screen
+                  name="OtpVerification"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: '',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={OtpVerificationScreen}
+                />
+                <RootStack.Screen
+                  name="PickupConfirmation"
+                  options={() => ({
+                    headerShown: false,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: '',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={PickupConfirmationScreen}
+                />
+                <RootStack.Screen
+                  name="EditProfile"
+                  options={() => ({
+                    headerShown: false,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: '',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={EditProfileScreen}
+                />
+                <RootStack.Screen
+                  name="ReferAndEarn"
+                  options={() => ({
+                    headerBackground: () => (
+                      <View
+                        style={[
+                          styles.headerContainer,
+                          {
+                            backgroundColor: colors.primary,
+                          },
+                        ]}>
+                        <View style={styles.curvedBackground} />
+                      </View>
+                    ),
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Refer & Earn',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={ReferAndEarnScreen}
+                />
 
-      <RootStack.Screen
-        name="Support"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Support',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={SupportScreen}
-      />
-      <RootStack.Screen
-        name="Faq"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'FAQ',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={FaqScreen}
-      />
-      <RootStack.Screen
-        name="TermsAndCondition"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Terms And Condition',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={TermsAndConditionScreen}
-      />
+                <RootStack.Screen
+                  name="Support"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Support',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={SupportScreen}
+                />
+                <RootStack.Screen
+                  name="Faq"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'FAQ',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={FaqScreen}
+                />
+                <RootStack.Screen
+                  name="TermsAndCondition"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Terms And Condition',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={TermsAndConditionScreen}
+                />
 
-      <RootStack.Screen
-        name="PrivacyAndPolicy"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Privacy & Policy',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={PrivacyAndPolicyScreen}
-      />
-      <RootStack.Screen
-        name="AskForLeave"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Ask For Leave',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={AskForLeaveScreen}
-      />
-      <RootStack.Screen
-        name="Transaction"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Transactions History',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={TransactionScreen}
-      />
-      <RootStack.Screen
-        name="OrderHistory"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Order History',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={OrderHistoryScreen}
-      />
-      <RootStack.Screen
-        name="Earnings"
-        options={() => ({
-          headerShown: true,
-          headerBackButtonDisplayMode: 'minimal',
-          headerTitle: 'Earnings',
-          headerShadowVisible: true,
-          headerTintColor: colors.textPrimary,
-        })}
-        component={EarningsScreen}
-      />
+                <RootStack.Screen
+                  name="PrivacyAndPolicy"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Privacy & Policy',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={PrivacyAndPolicyScreen}
+                />
+                <RootStack.Screen
+                  name="AskForLeave"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Ask For Leave',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={AskForLeaveScreen}
+                />
+                <RootStack.Screen
+                  name="Transaction"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Transactions History',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={TransactionScreen}
+                />
+                <RootStack.Screen
+                  name="OrderHistory"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Order History',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={OrderHistoryScreen}
+                />
+                <RootStack.Screen
+                  name="Earnings"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Earnings',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={EarningsScreen}
+                />
+              </RootStack.Group>
+            </>
+          )}
+        </>
+      )}
     </RootStack.Navigator>
   );
 };

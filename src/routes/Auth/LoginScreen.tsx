@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Keyboard, StyleSheet, Text, View} from 'react-native';
-import Bg from '../../assets/Icons/Bg';
-import LoginVector from '../../assets/Icons/LoginVector';
 import {AuthLayout} from '../../layout';
 import {colors, typography} from '../../constants';
-import CustomTextInput from '../../components/CustomTextInput';
-import CustomButton from '../../components/CustomButton';
+import {CustomTextInput, CustomButton} from '../../components';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '../../navigation';
-import {useResponsiveScale} from '../../hooks';
+import {useAuth, useResponsiveScale} from '../../hooks';
 import {useHeaderHeight} from '@react-navigation/elements';
+import {Bg, LoginVector} from '../../assets';
 
 const LoginScreen = ({
   navigation,
@@ -25,9 +23,8 @@ const LoginScreen = ({
     windowWidth,
     windowHeight,
   } = useResponsiveScale();
-
+  const {auth, handleChange, handleSendOtp, loading, error} = useAuth();
   const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
-  const [phone, setPhone] = useState('');
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardStatus(true);
@@ -99,8 +96,9 @@ const LoginScreen = ({
           placeholder="Enter Mobile Number"
           keyboardType="phone-pad"
           maxLength={10}
-          value={phone}
-          onChangeText={setPhone}
+          value={auth.user_mobile.toString()}
+          onChangeText={text => handleChange('user_mobile', text)}
+          error={error.login}
         />
 
         <Text style={[styles.terms, {fontSize: scaleFont(12)}]}>
@@ -111,7 +109,8 @@ const LoginScreen = ({
 
         <CustomButton
           title="Send OTP"
-          onPress={() => navigation.navigate('Otp')}
+          onPress={handleSendOtp}
+          loading={loading.login}
         />
       </View>
     </AuthLayout>
