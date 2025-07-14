@@ -6,4 +6,5 @@ export {
   updateVehicleDetailsByApi,
   getBankDetails,
   updateBankDetailsByApi,
+  profileValidation,
 } from './ProfileService';

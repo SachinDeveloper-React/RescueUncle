@@ -9,26 +9,41 @@ import {
 import AddressRow from './AddressRow';
 import {colors} from '../../../../../constants';
 
-type Props = {};
+type Props = {
+  customerDetails: {
+    country_calling_code: number;
+    mobile: number;
+    alternative_contact_number: number;
+    full_name: string;
+    address: {
+      address_type: string;
+      full_address: string;
+      address_state: string;
+      address_district: string;
+      address_pincode: string;
+      address_country: string;
+    };
+  };
+};
 
-const UserSection = (props: Props) => {
+const UserSection = ({customerDetails}: Props) => {
   return (
     <View style={styles.section}>
       <View style={[styles.infoRow, {alignItems: 'center'}]}>
         <UserIcon />
-        <Text style={styles.label}>Aman Sharma</Text>
+        <Text style={styles.label}>{customerDetails.full_name}</Text>
         <CallIcon2 />
       </View>
 
       <AddressRow
         icon={<PickupAddressIcon />}
-        title="Pickup Center-1"
-        address="Nikhita Stores, 201/B, Nirant Apts, Andheri East 400069"
+        title={`${customerDetails.address.address_state}, ${customerDetails.address.address_pincode}`}
+        address={`${customerDetails.address.full_address}, ${customerDetails.address.address_state} ${customerDetails.address.address_pincode}`}
       />
 
       <AddressRow
         icon={<LocationIcon />}
-        title="Delivery"
+        title="Warehouse"
         address="201/D, Ananta Apts, Near Jal Bhawan, Andheri 400069"
       />
     </View>

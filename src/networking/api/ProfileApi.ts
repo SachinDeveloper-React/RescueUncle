@@ -3,12 +3,20 @@ import {AccountsApi} from '../ApiClient';
 import {URLS} from '../endpoints';
 
 const ProfileApi = {
+  getProfileValidation: async () => {
+    try {
+      const response = await AccountsApi.get(URLS.PROFILE.PROFILEVALIDATION);
+      return responseHandler(response);
+    } catch (error) {
+      console.log('get profile validation error', error);
+      return errorHandler(error);
+    }
+  },
   getProfile: async () => {
     try {
       const response = await AccountsApi.get(URLS.PROFILE.GETPROFILEDETAILS);
       return responseHandler(response);
     } catch (error) {
-      console.log('get profile error', error);
       return errorHandler(error);
     }
   },
@@ -47,7 +55,6 @@ const ProfileApi = {
       const response = await AccountsApi.get(URLS.PROFILE.GETVEHICLEDETAILS);
       return responseHandler(response);
     } catch (error) {
-      console.log('get profile error', error);
       return errorHandler(error);
     }
   },
@@ -60,16 +67,13 @@ const ProfileApi = {
     vehicle_name: string;
   }) => {
     try {
-      console.log('body', body);
       const response = await AccountsApi.post(
         URLS.PROFILE.UPDATEVEHICLEDETAILS,
         body,
       );
 
-      console.log('response', response);
       return responseHandler(response);
     } catch (error) {
-      console.log('update vehicle error', error);
       return errorHandler(error);
     }
   },
@@ -81,7 +85,6 @@ const ProfileApi = {
       );
       return responseHandler(response);
     } catch (error) {
-      console.log('get bank error', error);
       return errorHandler(error);
     }
   },
@@ -94,16 +97,13 @@ const ProfileApi = {
     is_active: boolean;
   }) => {
     try {
-      console.log('body', body);
       const response = await AccountsApi.post(
         URLS.PROFILE.UPDATEBANKDETAILS,
         body,
       );
 
-      console.log('response', response);
       return responseHandler(response);
     } catch (error) {
-      console.log('update vehicle error', error);
       return errorHandler(error);
     }
   },

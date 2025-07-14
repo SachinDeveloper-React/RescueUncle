@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {
-  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,8 +10,11 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {colors} from '../../constants';
 import {RegistrationImage, RightIcon} from '../../assets';
-import {AuthStackParamList, navigate} from '../../navigation';
+import {AuthStackParamList} from '../../navigation';
 import {useDetailsForm, useResponsiveScale} from '../../hooks';
+import {useAuthStore} from '../../store';
+import {showMessage} from '../../utils';
+import {CustomButton, CustomLoading} from '../../components';
 
 const formSections = [
   {labal: 'Personal Information', navigate: 'PersonalInformation'},
@@ -24,20 +26,29 @@ const RegistrationCompleteScreen = ({
   navigation,
 }: NativeStackScreenProps<AuthStackParamList, 'RegistrationComplete'>) => {
   const {scale, verticalScale, scaleFont} = useResponsiveScale();
-  const {fetchProfileDetails, fetchVehicleDetails, fetchBankDetails} =
-    useDetailsForm();
+  const {profileComplete} = useAuthStore();
+  const {
+    getAllLoading,
+    bankDetails,
+    personalDetails,
+    vehicleDetails,
+    getProfileValidation,
+  } = useDetailsForm();
+
+  const {logout} = useAuthStore.getState();
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
         return (
-          <TouchableOpacity onPress={() => navigate('Main')}>
+          <TouchableOpacity onPress={logout}>
             <Text
               style={{
                 fontSize: scaleFont(16),
                 fontWeight: '500',
                 color: 'blue',
               }}>
-              Done
+              Logout
             </Text>
           </TouchableOpacity>
         );
@@ -46,14 +57,38 @@ const RegistrationCompleteScreen = ({
   }, [navigation]);
 
   useEffect(() => {
-    (async () => {
-      await Promise.all([
-        fetchProfileDetails(),
-        fetchVehicleDetails(),
-        fetchBankDetails(),
-      ]);
-    })();
+    getProfileValidation();
   }, []);
+
+  if (getAllLoading) {
+    return <CustomLoading />;
+  }
+
+  const getStatusLabel = (sectionIndex: number): string => {
+    switch (sectionIndex) {
+      case 0:
+        return personalDetails.profile_status ? 'In Complete' : 'Not Complete';
+      case 1:
+        return vehicleDetails.is_active ? 'In Complete' : 'Not Complete';
+      case 2:
+        return bankDetails.is_active ? 'In Complete' : 'Not Complete';
+      default:
+        return 'Not Available';
+    }
+  };
+  const getStatusColor = (sectionIndex: number): string => {
+    switch (sectionIndex) {
+      case 0:
+        return personalDetails.profile_status ? '#34A853' : 'red';
+      case 1:
+        return vehicleDetails.is_active ? '#34A853' : 'red';
+      case 2:
+        return bankDetails.is_active ? '#34A853' : 'red';
+      default:
+        return 'Not Available';
+    }
+  };
+
   return (
     <SafeAreaView style={[styles.container, {}]}>
       <View style={styles.wrapper}>
@@ -109,18 +144,45 @@ const RegistrationCompleteScreen = ({
                 </Text>
                 <RightIcon />
               </View>
-              <Text style={[styles.status, {fontSize: scaleFont(14)}]}>
-                In complete
+              <Text
+                style={[
+                  styles.status,
+                  {fontSize: scaleFont(14), color: getStatusColor(index)},
+                ]}>
+                {getStatusLabel(index)}
               </Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
-
+        <View
+          style={{
+            paddingHorizontal: verticalScale(8),
+            marginBottom: verticalScale(16),
+          }}>
+          <CustomButton
+            title="Submit"
+            disabled={
+              !bankDetails.is_active &&
+              !personalDetails.profile_status &&
+              !vehicleDetails.is_active
+            }
+            onPress={() => {
+              if (
+                bankDetails.is_active &&
+                personalDetails.profile_status &&
+                vehicleDetails.is_active
+              ) {
+                profileComplete(true);
+              } else {
+                showMessage('Please complete all sections before proceeding.');
+              }
+            }}
+          />
+        </View>
         <Text
           style={[
             styles.footerText,
             {
-              marginBottom: verticalScale(16),
               fontSize: scaleFont(13),
             },
           ]}>

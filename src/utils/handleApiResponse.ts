@@ -9,7 +9,6 @@ interface ApiResponse {
 export const handleApiResponse = (
   res: ApiResponse,
 ): {message: string; code: number} => {
-  console.log('res', res);
   // 1. If there's an error flag and data has error messages
   if (res.error && res.data) {
     const errorField = Object.keys(res.data)[0]; // e.g., 'country_code' or 'user_mobile'

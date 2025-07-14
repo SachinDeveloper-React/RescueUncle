@@ -96,7 +96,6 @@ const useAuth = () => {
       );
 
       if (!res?.error && res?.status === 200) {
-        console.log(res.data.profile_status);
         await login(
           res.data?.data[0].access_token,
           res.data?.data[0].refresh_token,

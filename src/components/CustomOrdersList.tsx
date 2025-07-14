@@ -1,19 +1,31 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
-import {Order} from '../@types/order';
-import {ArrowDownIcon} from '../assets';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Dimensions,
+  RefreshControlProps,
+} from 'react-native';
+import {ArrowDownIcon, NoDataFound} from '../assets';
 import {moderateScale} from '../utils/scale';
-import {navigate} from '../navigation';
 import {colors} from '../constants';
+import {ServiceData} from '../store';
+import LottieView from 'lottie-react-native';
 
 type Props = {
-  ordersList: Order[];
+  ordersList: ServiceData[];
+  loading?: boolean;
+  refreshControl?: React.ReactElement<RefreshControlProps>;
+  error?: string | null;
+  onPress: (id: string | number) => void;
 };
 
 const statusColors: Record<string, string> = {
   PP: '#FF5963',
   PF: '#E81F2B',
-  PR: '#0050AA',
+  BG: '#0050AA',
   DF: '#E81F2B',
   D: '#34A853',
   DP: '#FF5963',
@@ -22,47 +34,48 @@ const statusColors: Record<string, string> = {
 const statusBgColors: Record<string, string> = {
   PP: '#FFE5E7',
   PF: '#FFE5E7',
-  PR: '#D0E6FF',
+  BG: '#D0E6FF',
   DF: '#FFE5E7',
   D: '#D9FFE3',
   DP: '#FFE5E7',
   DR: '#D0E6FF',
 };
 
-const CustomOrdersList = ({ordersList}: Props) => {
-  const renderItem = ({item}: {item: Order}) => (
+const CustomOrdersList = ({
+  ordersList,
+  error,
+  loading,
+  refreshControl,
+  onPress,
+}: Props) => {
+  const renderItem = ({item}: {item: ServiceData}) => (
     <Pressable
       accessible
       accessibilityRole="button"
-      accessibilityLabel={`Order ${item.orderNumber} with status ${item.status.label}`}
-      testID={`order_card_${item.orderNumber}`}
+      accessibilityLabel={`Order ${item.service_id} with status ${item.service_type}`}
+      testID={`order_card_${item.service_id}`}
       style={styles.cardContainer}
-      onPress={() => {
-        navigate('OrderDetail');
-      }}>
+      onPress={() => onPress(item.service_id)}>
       <View style={styles.card}>
         <View>
           <Text style={styles.label}>Order No.</Text>
           <Text style={styles.orderNumber} testID="order_number">
-            {item.orderNumber}
+            {item.service_id}
           </Text>
         </View>
         <View
           style={[
             styles.statusContainer,
             {
-              backgroundColor: statusBgColors[item.status.code] ?? '#E0E0E0',
+              backgroundColor: statusBgColors['BG'] ?? '#E0E0E0',
             },
           ]}
           accessible
-          accessibilityLabel={`Status: ${item.status.label}`}
-          testID={`status_${item.status.code}`}>
+          accessibilityLabel={`Status: ${item.service_id}`}
+          testID={`status_${item.service_id}`}>
           <Text
-            style={[
-              styles.statusText,
-              {color: statusColors[item.status.code] ?? '#000'},
-            ]}>
-            {item.status.label}
+            style={[styles.statusText, {color: statusColors['BG'] ?? '#000'}]}>
+            {item.customer_details.address.address_pincode}
           </Text>
         </View>
       </View>
@@ -72,12 +85,30 @@ const CustomOrdersList = ({ordersList}: Props) => {
     </Pressable>
   );
 
+  // Show loader
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <LottieView
+          source={require('../assets/animations/loading.json')}
+          autoPlay
+          loop
+          renderMode="AUTOMATIC"
+          style={styles.lottie}
+        />
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={ordersList}
-      keyExtractor={item => `orderlist_${item.orderNumber}`}
+      keyExtractor={item => `orderlist_${item.service_id}`}
       renderItem={renderItem}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={
+        ordersList.length === 0 ? {flex: 1} : styles.listContent
+      }
+      // scrollEnabled={ordersList.length !== 0}
       accessibilityRole="list"
       accessible
       testID="orders_list"
@@ -86,7 +117,31 @@ const CustomOrdersList = ({ordersList}: Props) => {
       updateCellsBatchingPeriod={10}
       maxToRenderPerBatch={10}
       removeClippedSubviews
+      refreshControl={refreshControl}
       renderToHardwareTextureAndroid
+      ListEmptyComponent={() => {
+        if (error) {
+          return (
+            <View style={styles.centered}>
+              <LottieView
+                source={require('../assets/animations/error.json')}
+                autoPlay
+                loop
+                renderMode="AUTOMATIC"
+                style={styles.lottie}
+              />
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          );
+        } else {
+          return (
+            <View style={styles.centered}>
+              <NoDataFound />
+              <Text style={styles.emptyText}>No New Orders</Text>
+            </View>
+          );
+        }
+      }}
     />
   );
 };
@@ -136,5 +191,30 @@ const styles = StyleSheet.create({
   arrowIcon: {
     alignItems: 'center',
     marginTop: moderateScale(6),
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: moderateScale(20),
+  },
+  loadingText: {
+    fontSize: moderateScale(18),
+    color: colors.textPrimary,
+  },
+  errorText: {
+    fontSize: moderateScale(16),
+    color: 'red',
+    textAlign: 'center',
+    paddingHorizontal: moderateScale(20),
+  },
+  emptyText: {
+    color: '#2B2E35',
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  lottie: {
+    width: Dimensions.get('window').width * 0.8,
+    height: Dimensions.get('window').width * 0.8,
   },
 });

@@ -18,6 +18,7 @@ type Props = {
   onRemoveImage?: () => void;
   onPreviewPress?: () => void;
   uploadText?: string;
+  isError?: boolean;
 };
 
 const UploadBox: React.FC<Props> = ({
@@ -27,10 +28,16 @@ const UploadBox: React.FC<Props> = ({
   onRemoveImage,
   uploadText = 'Upload Photo',
   onPreviewPress,
+  isError = false,
 }) => {
   return (
     <TouchableOpacity
-      style={styles.uploadBtn}
+      style={[
+        styles.uploadBtn,
+        {
+          borderColor: isError ? colors.error : colors.inputBorder,
+        },
+      ]}
       onPress={onPress}
       accessibilityLabel={label}
       accessibilityHint={`Tap to upload the ${label.toLowerCase()}`}>
@@ -54,9 +61,23 @@ const UploadBox: React.FC<Props> = ({
               </TouchableOpacity>
             </>
           ) : (
-            <View style={styles.uploadInner}>
-              <CameraIcon />
-              <Text style={styles.uploadText}>{uploadText}</Text>
+            <View
+              style={[
+                styles.uploadInner,
+                {
+                  borderColor: isError ? colors.error : colors.primary,
+                },
+              ]}>
+              <CameraIcon color={isError ? colors.error : colors.primary} />
+              <Text
+                style={[
+                  styles.uploadText,
+                  {
+                    color: isError ? colors.error : colors.primary,
+                  },
+                ]}>
+                {uploadText}
+              </Text>
             </View>
           )}
         </View>
@@ -78,14 +99,12 @@ const UploadBox: React.FC<Props> = ({
   );
 };
 
-export default UploadBox;
-
 const styles = StyleSheet.create({
   uploadBtn: {
     flex: 1,
     backgroundColor: colors.inputBackground,
     borderWidth: 1 * PixelRatio.get(),
-    borderColor: colors.inputBorder,
+
     borderStyle: 'dotted',
     borderRadius: 8,
     justifyContent: 'center',
@@ -129,3 +148,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
+export default UploadBox;

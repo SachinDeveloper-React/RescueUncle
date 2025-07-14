@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 
-type PersonalDetails = {
+export type PersonalDetails = {
   full_name: string;
   gender: string;
   emergency_name_1: string;
@@ -15,9 +15,13 @@ type PersonalDetails = {
   pincode?: string;
   identification_number?: string;
   identification_type?: string;
+  is_active?: boolean;
+  profile_status?: boolean;
+  is_delivery_agent_active?: boolean;
+  user_mobile?: number;
 };
 
-type VehicleDetails = {
+export type VehicleDetails = {
   vehicle_registration_number: string;
   Chassis_number: string;
   engine_number: string;
@@ -27,7 +31,7 @@ type VehicleDetails = {
   is_active?: boolean;
 };
 
-type BankDetails = {
+export type BankDetails = {
   bank_name: string;
   account_number: string;
   ifsc_code: string;

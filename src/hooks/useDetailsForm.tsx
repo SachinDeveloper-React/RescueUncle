@@ -4,6 +4,7 @@ import {
   getBankDetails,
   getProfileDetails,
   getVehicleDetails,
+  profileValidation,
   updateBankDetailsByApi,
   updateProfileDetailsByApi,
   updateVehicleDetailsByApi,
@@ -40,10 +41,17 @@ const initialState: FormState = {
 };
 
 const useDetailsForm = () => {
-  const {updatePersonalDetails, updateVehicleDetails, updateBankDetails} =
-    useDetailsFormStore();
+  const {
+    updatePersonalDetails,
+    updateVehicleDetails,
+    updateBankDetails,
+    bankDetails,
+    personalDetails,
+    vehicleDetails,
+  } = useDetailsFormStore();
 
   const [state, setState] = useState<FormState>(initialState);
+  const [getAllLoading, setGetAllLoading] = useState<boolean>(false);
 
   const setLoading = (key: keyof FormState, loading: boolean) => {
     setState(prev => ({
@@ -72,6 +80,7 @@ const useDetailsForm = () => {
           ...data,
           emergency_contact_1: data.emergency_contact_1?.toString?.() || '',
           emergency_contact_2: data.emergency_contact_2?.toString?.() || '',
+          user_mobile: data.user_mobile.toString?.() || '',
         });
       } else {
         throw new Error('Invalid profile data received');
@@ -104,7 +113,11 @@ const useDetailsForm = () => {
         await fetchProfileDetails();
         goBack();
       } else {
-        throw new Error(response?.data?.message || 'Failed to update profile');
+        throw new Error(
+          response?.data?.message ||
+            response?.data ||
+            'Failed to update profile',
+        );
       }
     } catch (err: any) {
       console.error('Error updating profile:', err);
@@ -154,7 +167,6 @@ const useDetailsForm = () => {
         await fetchVehicleDetails();
         goBack();
       } else {
-        console.log('response', response);
         throw new Error(response?.data || 'Failed to update vehicle');
       }
     } catch (err: any) {
@@ -214,8 +226,44 @@ const useDetailsForm = () => {
     }
   };
 
+  const getProfileValidation = async () => {
+    try {
+      setGetAllLoading(true);
+      const result = await profileValidation();
+      if (
+        result.status === 200 &&
+        result.data?.account_status &&
+        typeof result.data?.account_status === 'object'
+      ) {
+        updatePersonalDetails({
+          ...result.data.account_status?.profile_data,
+          emergency_contact_1:
+            result.data.account_status?.profile_data.emergency_contact_1?.toString?.() ||
+            '',
+          emergency_contact_2:
+            result.data.account_status?.profile_data.emergency_contact_2?.toString?.() ||
+            '',
+        });
+        updateVehicleDetails(result.data.account_status?.vehicle_data);
+        updateBankDetails(result.data.account_status?.bank_account_data);
+      } else {
+        throw new Error('Invalid Data received');
+      }
+    } catch (err: any) {
+      setError('profile', err?.message || 'Failed to fetch profile details');
+      setError('vehicle', err?.message || 'Failed to fetch vehicle details');
+      setError('bank', err?.message || 'Failed to fetch bank details');
+    } finally {
+      setGetAllLoading(false);
+    }
+  };
+
   return {
     state,
+    getAllLoading,
+    bankDetails,
+    personalDetails,
+    vehicleDetails,
 
     fetchProfileDetails,
     updateProfileDetail,
@@ -225,6 +273,8 @@ const useDetailsForm = () => {
 
     fetchBankDetails,
     updateBankDetail,
+
+    getProfileValidation,
   };
 };
 

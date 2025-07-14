@@ -1,5 +1,22 @@
 import {ProfileApi} from '../networking';
 
+export const profileValidation = async () => {
+  const res = await ProfileApi.getProfileValidation();
+  if (res.code !== 200) {
+    return {
+      status: res.code,
+      data: res.data.detail || res.data.message || 'Unexpected error',
+      error: true,
+    };
+  } else {
+    return {
+      status: res.code,
+      data: res.data,
+      error: false,
+    };
+  }
+};
+
 export const getProfileDetails = async () => {
   const res = await ProfileApi.getProfile();
   if (res.code !== 200) {
@@ -66,7 +83,7 @@ export const updateProfileDetailsByApi = async (body: {
   identification_type?: string;
 }) => {
   const res = await ProfileApi.updateProfile(body);
-  console.log('update res', res);
+
   if (res.code !== 200) {
     return {
       status: res.code,

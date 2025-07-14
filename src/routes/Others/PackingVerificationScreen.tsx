@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Modal, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {
   CustomButton,
   CustomUploadBox,
@@ -8,31 +8,24 @@ import {
 import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openVideoCamera} from '../../utils';
+import {deviceVideoSchema} from '../../validations';
+import {useMediaStore} from '../../store';
 
 const PackingVerificationScreen = () => {
-  const [beforePackingVideoUri, setBeforePackingVideoUri] = useState<
-    string | null
-  >(null);
-  const [afterPackingVideoUri, setAfterPackingVideoUri] = useState<
-    string | null
-  >(null);
-
+  const {videos, setVideo} = useMediaStore();
+  const [errorShow, setErrorShow] = useState({before: false, after: false});
   const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
   const [previewVideoUri, setPreviewVideoUri] = useState<string | null>(null);
 
-  const handleVideoCapture = async (type: 'before' | 'after') => {
-    const uri = await openVideoCamera();
-    if (uri) {
-      type === 'before'
-        ? setBeforePackingVideoUri(uri)
-        : setAfterPackingVideoUri(uri);
+  const handleVideoCapture = async (type: 'after' | 'before') => {
+    const result = await openVideoCamera();
+    if (result) {
+      setVideo(type, result);
     }
   };
 
   const handleRemoveVideo = (type: 'before' | 'after') => {
-    type === 'before'
-      ? setBeforePackingVideoUri(null)
-      : setAfterPackingVideoUri(null);
+    setVideo(type, null);
   };
 
   const handlePreviewVideo = (uri: string) => {
@@ -55,30 +48,48 @@ const PackingVerificationScreen = () => {
             <CustomUploadBox
               uploadText="Upload Video"
               label="Before Packing"
-              imageUri={beforePackingVideoUri}
+              imageUri={videos.before?.uri || null}
               onPress={() => handleVideoCapture('before')}
               onRemoveImage={() => handleRemoveVideo('before')}
               onPreviewPress={() =>
-                beforePackingVideoUri &&
-                handlePreviewVideo(beforePackingVideoUri)
+                videos.before?.uri && handlePreviewVideo(videos.before.uri)
               }
+              isError={Boolean(errorShow.before)}
             />
             <CustomUploadBox
               uploadText="Upload Video"
               label="After Packing"
-              imageUri={afterPackingVideoUri}
+              imageUri={videos.after?.uri || null}
               onPress={() => handleVideoCapture('after')}
               onRemoveImage={() => handleRemoveVideo('after')}
               onPreviewPress={() =>
-                afterPackingVideoUri && handlePreviewVideo(afterPackingVideoUri)
+                videos.after?.uri && handlePreviewVideo(videos.after.uri)
               }
+              isError={Boolean(errorShow.after)}
             />
           </View>
         </View>
 
         <CustomButton
           title="Submit"
-          onPress={() => navigate('OtpVerification')}
+          disabled={!Boolean(videos.before) || !Boolean(videos.after)}
+          onPress={() => {
+            const {error} = deviceVideoSchema.validate(videos, {
+              abortEarly: false,
+            });
+
+            if (error) {
+              error.details.forEach(detail => {
+                const field = detail.path[0];
+                setErrorShow(prev => ({...prev, [field]: true}));
+              });
+
+              return;
+            }
+
+            setErrorShow({after: false, before: false});
+            navigate('PreviewAllMedia');
+          }}
           style={{marginTop: 20}}
         />
 

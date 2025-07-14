@@ -20,7 +20,8 @@ export const requestLocationPermission = async (): Promise<boolean> => {
 
     case RESULTS.BLOCKED:
       console.warn('Permission blocked. Ask user to enable it in settings.');
-      return false;
+      const newStatus = await request(permission);
+      return newStatus === RESULTS.GRANTED;
 
     default:
       return false;

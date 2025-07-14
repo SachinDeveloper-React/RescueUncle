@@ -8,13 +8,16 @@ import {
   DeviceExteriorScreen,
   DeviceSidesScreen,
   EarningsScreen,
+  EditBankDetailScreen,
   EditProfileScreen,
+  EditVehicleDetailScreen,
   FaqScreen,
   OrderDetailScreen,
   OrderHistoryScreen,
   OtpVerificationScreen,
   PackingVerificationScreen,
   PickupConfirmationScreen,
+  PreviewAllMediaScreen,
   PrivacyAndPolicyScreen,
   ReferAndEarnScreen,
   SupportScreen,
@@ -128,6 +131,28 @@ const AppNavigator = (props: Props) => {
                   component={EditProfileScreen}
                 />
                 <RootStack.Screen
+                  name="EditVehicleDetail"
+                  options={() => ({
+                    headerShown: false,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Edit Vehicle Details',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={EditVehicleDetailScreen}
+                />
+                <RootStack.Screen
+                  name="EditBankDetail"
+                  options={() => ({
+                    headerShown: false,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Edit Bank Details',
+                    headerShadowVisible: false,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={EditBankDetailScreen}
+                />
+                <RootStack.Screen
                   name="ReferAndEarn"
                   options={() => ({
                     headerBackground: () => (
@@ -238,6 +263,17 @@ const AppNavigator = (props: Props) => {
                     headerTintColor: colors.textPrimary,
                   })}
                   component={EarningsScreen}
+                />
+                <RootStack.Screen
+                  name="PreviewAllMedia"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Preview',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={PreviewAllMediaScreen}
                 />
               </RootStack.Group>
             </>

@@ -2,8 +2,12 @@ const isProduction = false;
 export const BASE_URL = isProduction
   ? ''
   : 'https://accounts.rescueuncle.in/accounts';
+export const SERVICE_URL = isProduction
+  ? ''
+  : 'https://services.rescueuncle.in';
 
 export const DELIVERY_AGENT = 'delivery-agent';
+export const SERVICE_AGENT = 'services';
 export const URLS = {
   AUTH: {
     LOGIN: `/${DELIVERY_AGENT}/login`,
@@ -17,5 +21,9 @@ export const URLS = {
     UPDATEPROFILEDETAILS: `/${DELIVERY_AGENT}/profile`,
     UPDATEVEHICLEDETAILS: `/vehicle`,
     UPDATEBANKDETAILS: `/${DELIVERY_AGENT}/bank-account`,
+    PROFILEVALIDATION: `/${DELIVERY_AGENT}/profile-validation`,
+  },
+  SERVICES: {
+    GETSERVICES: `/${SERVICE_AGENT}/delivery-services`,
   },
 };

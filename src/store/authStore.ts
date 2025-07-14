@@ -14,6 +14,7 @@ type AuthState = {
     user: any,
     profile: boolean,
   ) => Promise<void>;
+  profileComplete: (isProfileCompleted: boolean) => Promise<void>;
   logout: () => Promise<void>;
   refreshAccessToken: () => Promise<boolean>;
 };
@@ -30,9 +31,13 @@ export const useAuthStore = create<AuthState>()(
         set({user, isAuthenticated: true, isProfileCompleted: profileComplete});
       },
 
+      profileComplete: async isProfileCompleted => {
+        set({isProfileCompleted});
+      },
+
       logout: async () => {
         await clearTokens();
-        set({user: null, isAuthenticated: false});
+        set({user: null, isAuthenticated: false, isProfileCompleted: false});
       },
 
       refreshAccessToken: async () => {

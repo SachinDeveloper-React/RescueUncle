@@ -52,7 +52,7 @@ export default function useFormManager<T extends Record<string, any>>({
         const key = detail.path[0] as keyof T;
         newErrors[key] = detail.message;
       });
-      console.log('newErrors', newErrors);
+
       setErrors(newErrors);
       setServerError(null);
       return;
@@ -74,6 +74,7 @@ export default function useFormManager<T extends Record<string, any>>({
 
   return {
     form,
+    setForm,
     errors,
     serverError,
     inputRefs,

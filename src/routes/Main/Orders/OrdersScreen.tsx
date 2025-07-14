@@ -1,25 +1,41 @@
-import React, {useState} from 'react';
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {colors} from '../../../constants';
-import {ordersList} from '../../../constants/orders';
 import {CustomDatePickerModal, CustomOrdersList} from '../../../components';
 import {ArrowDownIcon} from '../../../assets';
 import {moderateScale} from '../../../utils/scale';
-
 import {formatDate} from '../../../utils';
-import {DateType} from 'react-native-ui-datepicker';
+import {useOrderService} from '../../../hooks';
+import {navigate} from '../../../navigation';
 
 const OrdersScreen = () => {
-  const tabs = ['WH', 'Customer', 'SC'];
-  const [selectedTab, setSelectedTab] = useState('Customer');
+  const {
+    getOrderData,
+    isDatePickerVisible,
+    selectedDate,
+    selectedTab,
+    setIsDatePickerVisible,
+    setSelectedDate,
+    tabs,
+    handlePress,
+    Customer,
+    SC,
+    WH,
+    refreshLoadingState,
+  } = useOrderService();
 
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<DateType>(new Date());
+  useEffect(() => {
+    getOrderData('Customer');
+  }, []);
 
-  const handlePress = (tab: string) => {
-    setSelectedTab(tab);
-    console.log('Selected tab:', tab);
-  };
+  const activeData =
+    selectedTab === 'Customer' ? Customer : selectedTab === 'WH' ? WH : SC;
 
   return (
     <View style={styles.container}>
@@ -58,7 +74,23 @@ const OrdersScreen = () => {
         />
       </View>
 
-      <CustomOrdersList ordersList={ordersList} />
+      <CustomOrdersList
+        ordersList={activeData.pagination.data}
+        loading={activeData.loading}
+        error={activeData.error}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshLoadingState[selectedTab]}
+            onRefresh={() => getOrderData(selectedTab, true)}
+          />
+        }
+        onPress={id => {
+          navigate('OrderDetail', {
+            id: id,
+            tab: selectedTab,
+          });
+        }}
+      />
     </View>
   );
 };

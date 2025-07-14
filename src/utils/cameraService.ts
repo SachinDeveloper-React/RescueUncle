@@ -55,7 +55,7 @@ export const openCamera = async (): Promise<Asset | null> => {
   return null;
 };
 
-export const openVideoCamera = async (): Promise<string | null> => {
+export const openVideoCamera = async (): Promise<Asset | null> => {
   const hasPermission = await requestCameraPermission();
   if (!hasPermission) {
     Alert.alert(
@@ -83,10 +83,10 @@ export const openVideoCamera = async (): Promise<string | null> => {
   if (result.assets && result.assets.length > 0) {
     const videoUri = result.assets[0].uri;
     if (videoUri?.endsWith('.mp4')) {
-      return videoUri;
+      return result.assets[0] || null;
     } else {
       Alert.alert('Warning', 'Video recorded is not in MP4 format.');
-      return videoUri ?? null;
+      return result.assets[0] ?? null;
     }
   } else if (result.errorCode) {
     Alert.alert('Error', result.errorMessage || 'Failed to record video');

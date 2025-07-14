@@ -16,8 +16,8 @@ const AddressRow = ({address, icon, title}: Props) => {
         <Text style={styles.boldText}>{title}</Text>
         <Text style={styles.normalText}>{address}</Text>
       </View>
-      <CallIcon2 />
-      <ShareIcon />
+      {/* <CallIcon2 /> */}
+      {/* <ShareIcon /> */}
     </View>
   );
 };

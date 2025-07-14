@@ -1,31 +1,32 @@
 import React, {useState} from 'react';
-import {SafeAreaView, View, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, View, StyleSheet, Text, Alert} from 'react-native';
 import {CustomButton, CustomUploadBox} from '../../components';
 import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openCamera} from '../../utils';
 import ImageView from 'react-native-image-viewing';
+import {useMediaStore} from '../../store/mediaStore';
+import {deviceExteriorSchema} from '../../validations';
 
 const DeviceExteriorScreen = () => {
-  const [frontImage, setFrontImage] = useState<string | null>(null);
-  const [backImage, setBackImage] = useState<string | null>(null);
   const [visible, setIsVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
+  const [errorShow, setErrorShow] = useState({front: false, back: false});
+  const {photos, setPhoto} = useMediaStore();
 
   const handleImagePick = async (type: 'front' | 'back') => {
     const result = await openCamera();
 
     if (result) {
-      console.log('result', result);
       const uri = result.uri;
       if (uri) {
-        type === 'front' ? setFrontImage(uri) : setBackImage(uri);
+        setPhoto(type, result);
       }
     }
   };
 
   const handleRemoveImage = (type: 'front' | 'back') => {
-    type === 'front' ? setFrontImage(null) : setBackImage(null);
+    setPhoto(type, null);
   };
 
   const handlePreview = (uri: string) => {
@@ -46,25 +47,50 @@ const DeviceExteriorScreen = () => {
             <View style={{flex: 1}}>
               <CustomUploadBox
                 label="Device Front Image"
-                imageUri={frontImage}
+                imageUri={photos.front?.uri || null}
                 onPress={() => handleImagePick('front')}
                 onRemoveImage={() => handleRemoveImage('front')}
-                onPreviewPress={() => frontImage && handlePreview(frontImage)}
+                onPreviewPress={() =>
+                  photos.front?.uri && handlePreview(photos.front.uri)
+                }
+                isError={Boolean(errorShow.front)}
               />
             </View>
-            <CustomUploadBox
-              label="Device Back Image"
-              imageUri={backImage}
-              onPress={() => handleImagePick('back')}
-              onRemoveImage={() => handleRemoveImage('back')}
-              onPreviewPress={() => backImage && handlePreview(backImage)}
-            />
+            <View style={{flex: 1}}>
+              <CustomUploadBox
+                label="Device Back Image"
+                imageUri={photos.back?.uri || null}
+                onPress={() => handleImagePick('back')}
+                onRemoveImage={() => handleRemoveImage('back')}
+                onPreviewPress={() =>
+                  photos.back?.uri && handlePreview(photos.back.uri)
+                }
+                isError={Boolean(errorShow.back)}
+              />
+            </View>
           </View>
         </View>
 
         <CustomButton
           title="Submit"
-          onPress={() => navigate('DeviceSides')}
+          disabled={!Boolean(photos.front) || !Boolean(photos.back)}
+          onPress={() => {
+            const {error} = deviceExteriorSchema.validate(photos, {
+              abortEarly: false,
+            });
+
+            if (error) {
+              error.details.forEach(detail => {
+                const field = detail.path[0];
+                setErrorShow(prev => ({...prev, [field]: true}));
+              });
+
+              return;
+            }
+
+            setErrorShow({front: false, back: false});
+            navigate('DeviceSides');
+          }}
           style={{marginTop: 20}}
         />
         {selectedImageUri && (

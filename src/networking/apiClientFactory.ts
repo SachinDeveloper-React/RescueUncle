@@ -11,7 +11,7 @@ export interface CreateApiClientOptions {
 
 export const createApiClient = ({
   baseURL,
-  timeout = 10000,
+  timeout = 100000,
   headers = {'Content-Type': 'application/json'},
 }: CreateApiClientOptions): AxiosInstance => {
   const instance = axios.create({

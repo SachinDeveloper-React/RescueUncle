@@ -89,6 +89,7 @@ const PersonalInformationScreen = () => {
             title="Submit"
             onPress={handleSubmit}
             loading={state.profileUpdate.loading}
+            disabled={state.profileUpdate.loading}
           />
         </View>
       </AuthLayout>

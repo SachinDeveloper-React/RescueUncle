@@ -4,6 +4,8 @@ export {default as PackingVerificationScreen} from './PackingVerificationScreen'
 export {default as OtpVerificationScreen} from './OtpVerificationScreen';
 export {default as PickupConfirmationScreen} from './PickupConfirmationScreen';
 export {default as EditProfileScreen} from './EditProfileScreen';
+export {default as EditBankDetailScreen} from './EditBankDetailScreen';
+export {default as EditVehicleDetailScreen} from './EditVehicleDetailScreen';
 export {default as ReferAndEarnScreen} from './ReferAndEarnScreen';
 export {default as SupportScreen} from './SupportScreen';
 export {default as FaqScreen} from './FaqScreen';
@@ -13,3 +15,4 @@ export {default as AskForLeaveScreen} from './AskForLeaveScreen';
 export {default as TransactionScreen} from './TransactionScreen';
 export {default as OrderHistoryScreen} from './OrderHistoryScreen';
 export {default as EarningsScreen} from './EarningsScreen';
+export {default as PreviewAllMediaScreen} from './PreviewAllMediaScreen';

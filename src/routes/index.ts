@@ -23,4 +23,7 @@ export {
   EarningsScreen,
   OrderHistoryScreen,
   TransactionScreen,
+  EditBankDetailScreen,
+  EditVehicleDetailScreen,
+  PreviewAllMediaScreen,
 } from './Others';

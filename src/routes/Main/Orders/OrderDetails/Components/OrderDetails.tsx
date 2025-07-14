@@ -1,14 +1,22 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../../../constants';
 
-const OrderDetails = () => (
+const OrderDetails = ({
+  id,
+  date,
+  pincode,
+}: {
+  id: string;
+  date: string;
+  pincode: string;
+}) => (
   <View style={[styles.subRow, styles.orderDetails]}>
     <View>
-      <Text style={styles.orderInfo}>Order No. #1120</Text>
-      <Text style={styles.orderInfo}>Dinner | 07:30 PM</Text>
+      <Text style={styles.orderInfo}>Service No. #{id}</Text>
+      <Text style={styles.orderInfo}>Today Date: {date}</Text>
     </View>
     <View style={styles.statusBadge}>
-      <Text style={styles.statusText}>Pickup Pending</Text>
+      <Text style={styles.statusText}>{pincode}</Text>
     </View>
   </View>
 );

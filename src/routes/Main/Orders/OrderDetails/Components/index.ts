@@ -4,3 +4,4 @@ export {default as Header} from './Header';
 export {default as OrderDetails} from './OrderDetails';
 export {default as StatusDropdown} from './StatusDropdown';
 export {default as UserSection} from './UserSection';
+export {default as ChargesInfo} from './ChargesInfo';

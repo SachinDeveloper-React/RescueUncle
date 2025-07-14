@@ -1,0 +1,81 @@
+import {
+  AskForLeaveIcon,
+  BankIcon,
+  EarningIcon,
+  EditProfileIcon,
+  EditVehicleDetailIcon,
+  FaqIcon,
+  LogoutIcon,
+  OrderHistoryIcon,
+  PrivacyIcon,
+  ReferIcon,
+  SupportIcon,
+  TermAndConditionIcon,
+  TransactionIcon,
+} from '../assets';
+
+export const options = [
+  {
+    id: 1,
+    leftIcon: EditProfileIcon,
+    title: 'Personal Information',
+    navigate: 'EditProfile',
+  },
+  {
+    id: 12,
+    leftIcon: BankIcon,
+    title: 'Bank Details',
+    navigate: 'EditBankDetail',
+  },
+  {
+    id: 13,
+    leftIcon: EditVehicleDetailIcon,
+    title: 'Vehicle Details',
+    navigate: 'EditVehicleDetail',
+  },
+  {
+    id: 2,
+    leftIcon: TransactionIcon,
+    title: 'Transaction',
+    navigate: 'Transaction',
+  },
+  {
+    id: 3,
+    leftIcon: OrderHistoryIcon,
+    title: 'Order History',
+    navigate: 'OrderHistory',
+  },
+  {
+    id: 11,
+    leftIcon: EarningIcon,
+    title: 'Earnings',
+    navigate: 'Earnings',
+  },
+  {
+    id: 4,
+    leftIcon: ReferIcon,
+    title: 'Refer and Earn',
+    navigate: 'ReferAndEarn',
+  },
+  {id: 5, leftIcon: SupportIcon, title: 'Support', navigate: 'Support'},
+  {id: 6, leftIcon: FaqIcon, title: 'Faq', navigate: 'Faq'},
+  {
+    id: 7,
+    leftIcon: TermAndConditionIcon,
+    title: 'Terms And Conditions',
+    navigate: 'TermsAndCondition',
+  },
+  {
+    id: 8,
+    leftIcon: PrivacyIcon,
+    title: 'Privacy',
+    navigate: 'PrivacyAndPolicy',
+  },
+  {
+    id: 9,
+    leftIcon: AskForLeaveIcon,
+    title: 'Ask For Leave',
+    navigate: 'AskForLeave',
+  },
+  {id: 10, leftIcon: LogoutIcon, title: 'Logout', navigate: ''},
+];

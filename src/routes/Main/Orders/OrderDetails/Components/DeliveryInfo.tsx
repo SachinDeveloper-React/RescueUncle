@@ -1,43 +1,30 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import StatusDropdown from './StatusDropdown';
-import {ClockIcon} from '../../../../../assets';
 import {colors} from '../../../../../constants';
 
-type Props = {};
+type Props = {
+  device_id: string;
+  device_name: string;
+  ru_device_id: string;
+};
 
-const DeliveryInfo = (props: Props) => {
-  const [statusOpen, setStatusOpen] = React.useState(false);
-  const [statusValue, setStatusValue] = React.useState(null);
-  const [statusItems, setStatusItems] = React.useState([
-    {label: 'Picked', value: 'picked'},
-    {label: 'Pending', value: 'pending'},
-    {label: 'Cancelled', value: 'cancelled'},
-  ]);
+const DeliveryInfo = ({device_id, device_name, ru_device_id}: Props) => {
   return (
     <View style={[styles.deliveryContainer]}>
       <View style={[styles.deliveryBox]}>
         <View style={{flex: 1}}>
-          <Text style={styles.deliveryTitle}>Delivery Pickup By</Text>
-          <Text style={styles.normalText}>Tomorrow</Text>
-          <Text style={styles.boldText}>5:30 PM, Thu, 25/08/2023</Text>
-        </View>
-        <View style={styles.timeLeftBox}>
-          <View style={styles.timeLeftHeader}>
-            <ClockIcon />
-            <Text style={styles.timeLeftLabel}>TIME LEFT</Text>
-          </View>
-          <Text style={styles.boldText}>1:04 Hrs</Text>
+          <Text style={styles.deliveryTitle}>Device Details</Text>
+          <Text style={styles.normalText}>
+            <Text style={{fontWeight: '500'}}>Device Name:</Text> {device_name}
+          </Text>
+          <Text style={styles.boldText}>
+            <Text style={{fontWeight: '500'}}>Device Id:</Text> {device_id}
+          </Text>
+          <Text style={styles.boldText}>
+            <Text style={{fontWeight: '500'}}>Service Id:</Text> {ru_device_id}
+          </Text>
         </View>
       </View>
-      <StatusDropdown
-        statusOpen={statusOpen}
-        statusValue={statusValue}
-        statusItems={statusItems}
-        setStatusOpen={setStatusOpen}
-        setStatusValue={setStatusValue}
-        setStatusItems={setStatusItems}
-      />
     </View>
   );
 };

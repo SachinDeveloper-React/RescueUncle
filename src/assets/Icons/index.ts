@@ -41,3 +41,5 @@ export {default as OrderHistoryIcon} from './OrderHistoryIcon';
 export {default as SearchIcon} from './SearchIcon';
 export {default as FilterIcon} from './FilterIcon';
 export {default as PreviewIcon} from './PreviewIcon';
+export {default as BankIcon} from './BankIcon';
+export {default as EditVehicleDetailIcon} from './EditVehicleDetailIcon';

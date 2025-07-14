@@ -3,12 +3,18 @@ import {View, Text, StyleSheet} from 'react-native';
 import {CallIcon2, ShareIcon} from '../../../../../assets';
 import {makePhoneCall} from '../../../../../utils';
 
-export const Header = () => {
+export const Header = ({
+  addressType,
+  phoneNumber,
+}: {
+  addressType: string;
+  phoneNumber: string;
+}) => {
   return (
     <View style={[styles.headerRow, styles.header]}>
-      <Text style={styles.headerTitle}>Pickup Center-1</Text>
+      <Text style={styles.headerTitle}>{addressType}</Text>
       <View style={styles.iconRow}>
-        <CallIcon2 onPress={() => makePhoneCall('8700707668')} />
+        <CallIcon2 onPress={() => makePhoneCall(phoneNumber)} />
         <ShareIcon />
       </View>
     </View>
@@ -39,6 +45,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    textTransform: 'capitalize',
   },
   iconRow: {
     flexDirection: 'row',

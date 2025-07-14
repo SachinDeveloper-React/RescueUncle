@@ -1,91 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {colors, options} from '../../../constants';
 import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {colors} from '../../../constants';
-import {
-  AskForLeaveIcon,
   CallIcon,
-  EarningIcon,
-  EditProfileIcon,
   EmailIcon,
-  FaqIcon,
-  LogoutIcon,
-  OrderHistoryIcon,
-  PrivacyIcon,
-  ReferIcon,
   RightIcon,
   StarIcon,
-  SupportIcon,
-  TermAndConditionIcon,
-  TransactionIcon,
   UserIcon,
 } from '../../../assets';
 import {verticalScale, moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../../navigation';
+import {useDetailsForm} from '../../../hooks';
+import {PersonalDetails, useAuthStore} from '../../../store';
 
-const options = [
-  {
-    id: 1,
-    leftIcon: EditProfileIcon,
-    title: 'Edit profile',
-    navigate: 'EditProfile',
-  },
-  {
-    id: 2,
-    leftIcon: TransactionIcon,
-    title: 'Transaction',
-    navigate: 'Transaction',
-  },
-  {
-    id: 3,
-    leftIcon: OrderHistoryIcon,
-    title: 'Order History',
-    navigate: 'OrderHistory',
-  },
-  {
-    id: 11,
-    leftIcon: EarningIcon,
-    title: 'Earnings',
-    navigate: 'Earnings',
-  },
-  {
-    id: 4,
-    leftIcon: ReferIcon,
-    title: 'Refer and Earn',
-    navigate: 'ReferAndEarn',
-  },
-  {id: 5, leftIcon: SupportIcon, title: 'Support', navigate: 'Support'},
-  {id: 6, leftIcon: FaqIcon, title: 'Faq', navigate: 'Faq'},
-  {
-    id: 7,
-    leftIcon: TermAndConditionIcon,
-    title: 'Terms And Conditions',
-    navigate: 'TermsAndCondition',
-  },
-  {
-    id: 8,
-    leftIcon: PrivacyIcon,
-    title: 'Privacy',
-    navigate: 'PrivacyAndPolicy',
-  },
-  {
-    id: 9,
-    leftIcon: AskForLeaveIcon,
-    title: 'Ask For Leave',
-    navigate: 'AskForLeave',
-  },
-  {id: 10, leftIcon: LogoutIcon, title: 'Logout', navigate: ''},
-];
-
-const ProfileHeader = () => (
+type ProfileHeaderProps = {
+  data: PersonalDetails;
+};
+const ProfileHeader = ({data}: ProfileHeaderProps) => (
   <View style={styles.profileWrapper}>
-    <View style={styles.avatarBorder}>
+    {/* <View style={styles.avatarBorder}>
       <Image
         source={{
           uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2960&auto=format&fit=crop',
@@ -93,13 +26,21 @@ const ProfileHeader = () => (
         style={styles.avatar}
         resizeMode="cover"
       />
-    </View>
+    </View> */}
     <View style={styles.infoSection}>
       <View style={styles.row}>
         <View style={styles.iconWrapper}>
           <UserIcon />
         </View>
-        <Text style={styles.text}>Sachin Chaurasiya</Text>
+        <Text
+          style={[
+            styles.text,
+            {
+              textTransform: 'capitalize',
+            },
+          ]}>
+          {data.full_name}
+        </Text>
         <View style={[styles.row, styles.star, {marginBottom: 0}]}>
           <Text style={styles.ratingText}>4.9</Text>
           <StarIcon />
@@ -109,24 +50,40 @@ const ProfileHeader = () => (
         <View style={styles.iconWrapper}>
           <CallIcon />
         </View>
-        <Text style={styles.text}>+91 8700707668</Text>
+        <Text style={styles.text}>+{data.user_mobile}</Text>
       </View>
       <View style={styles.row}>
         <View style={styles.iconWrapper}>
           <EmailIcon />
         </View>
         <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-          sachinkumarq87@gmail.com
+          {data.blood_group}
         </Text>
       </View>
     </View>
   </View>
 );
 
-const OptionItem = ({item}: any) => (
+const OptionItem = ({
+  item,
+}: {
+  item: {
+    id: number;
+    leftIcon: any;
+    title: string;
+    navigate: string | any;
+  };
+}) => (
   <TouchableOpacity
     style={styles.optionItem}
-    onPress={() => navigate(item.navigate)}>
+    onPress={() => {
+      if (item.title === 'Logout') {
+        const {logout} = useAuthStore.getState();
+        logout();
+      } else {
+        navigate(item.navigate);
+      }
+    }}>
     <View style={styles.optionLeft}>
       <item.leftIcon />
       <Text style={styles.optionText}>{item.title}</Text>
@@ -136,6 +93,11 @@ const OptionItem = ({item}: any) => (
 );
 
 const AccountScreen = () => {
+  const {personalDetails, fetchProfileDetails} = useDetailsForm();
+
+  useEffect(() => {
+    fetchProfileDetails();
+  }, []);
   return (
     <View style={styles.container}>
       <FlatList
@@ -144,7 +106,7 @@ const AccountScreen = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
           <>
-            <ProfileHeader />
+            <ProfileHeader data={personalDetails} />
             <Text style={styles.optionsTitle}>Options</Text>
           </>
         )}
@@ -191,6 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: moderateScale(8),
     flexWrap: 'nowrap',
+    gap: 10,
   },
   iconWrapper: {
     width: moderateScale(24),

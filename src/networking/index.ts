@@ -1,5 +1,11 @@
-export {BASE_URL, DELIVERY_AGENT, URLS} from './endpoints';
-export {AccountsApi} from './ApiClient';
+export {
+  BASE_URL,
+  DELIVERY_AGENT,
+  URLS,
+  SERVICE_AGENT,
+  SERVICE_URL,
+} from './endpoints';
+export {AccountsApi, ServiceApi} from './ApiClient';
 export {attachRequestInterceptor, getBearerToken} from './RequestInterceptor';
 export {attachResponseInterceptor} from './ResponseInterceptor';
-export {AuthApi, ProfileApi} from './api';
+export {AuthApi, ProfileApi, OrderApi} from './api';

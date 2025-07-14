@@ -1,2 +1,7 @@
 export {useAuthFormStore} from './authFormStore';
-export {useDetailsFormStore} from './detailsFormStore';
+export {
+  useDetailsFormStore,
+  type BankDetails,
+  type PersonalDetails,
+  type VehicleDetails,
+} from './detailsFormStore';

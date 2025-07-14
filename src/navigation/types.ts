@@ -27,13 +27,18 @@ export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Main: NavigatorScreenParams<BottomTabParamList>;
   Profile: NavigatorScreenParams<ProfileStackParamList>;
-  OrderDetail: undefined;
+  OrderDetail: {
+    id: string | number;
+    tab: 'WH' | 'Customer' | 'SC';
+  };
   DeviceExterior: undefined;
   DeviceSides: undefined;
   PackingVerification: undefined;
   OtpVerification: undefined;
   PickupConfirmation: undefined;
   EditProfile: undefined;
+  EditVehicleDetail: undefined;
+  EditBankDetail: undefined;
   ReferAndEarn: undefined;
   Support: undefined;
   Faq: undefined;
@@ -43,4 +48,5 @@ export type RootStackParamList = {
   Transaction: undefined;
   OrderHistory: undefined;
   Earnings: undefined;
+  PreviewAllMedia: undefined;
 };

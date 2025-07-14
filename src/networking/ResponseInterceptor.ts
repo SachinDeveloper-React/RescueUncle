@@ -35,12 +35,10 @@ const newAccessToken = async (): Promise<string | null> => {
     const refreshToken = await getBearerRefreshToken();
     if (!refreshToken) return null;
 
-    console.log('refreshToken', refreshToken);
     const response = await refreshClient.post(`${BASE_URL}/regenerate-token`, {
       refresh_token: refreshToken,
     });
 
-    console.log('response', response);
     const newToken = response.data?.data[0].access_token;
 
     if (newToken) {
