@@ -16,3 +16,4 @@ export {default as TransactionScreen} from './TransactionScreen';
 export {default as OrderHistoryScreen} from './OrderHistoryScreen';
 export {default as EarningsScreen} from './EarningsScreen';
 export {default as PreviewAllMediaScreen} from './PreviewAllMediaScreen';
+export {DropCustomer, DropService, WarehouseScreen} from './warehouse';

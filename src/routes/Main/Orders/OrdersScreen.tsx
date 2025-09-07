@@ -26,7 +26,7 @@ const OrdersScreen = () => {
     handlePress,
     Customer,
     SC,
-    WH,
+    VF,
     refreshLoadingState,
   } = useOrderService();
 
@@ -35,7 +35,7 @@ const OrdersScreen = () => {
   }, []);
 
   const activeData =
-    selectedTab === 'Customer' ? Customer : selectedTab === 'WH' ? WH : SC;
+    selectedTab === 'Customer' ? Customer : selectedTab === 'VF' ? VF : SC;
 
   return (
     <View style={styles.container}>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   tabText: {
     color: '#333',
     fontWeight: 'bold',
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(12),
   },
   activeTabText: {
     color: '#fff',

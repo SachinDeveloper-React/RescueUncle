@@ -26,4 +26,7 @@ export const URLS = {
   SERVICES: {
     GETSERVICES: `/${SERVICE_AGENT}/delivery-services`,
   },
+  UPLOADMEDIA: {
+    UPDATESERVICEDEVICEPICKUPCUSTOMER: `/${SERVICE_AGENT}/update-service-device-pick-up-customer/`,
+  },
 };

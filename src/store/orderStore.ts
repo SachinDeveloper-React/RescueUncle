@@ -22,16 +22,16 @@ const createInitialSection = (): ServiceSectionState => ({
 });
 
 export const useOrderStore = create<ServiceStore>(set => ({
-  WH: createInitialSection(),
+  VF: createInitialSection(),
   Customer: createInitialSection(),
   SC: createInitialSection(),
 
   setWH: payload =>
     set(state => ({
-      WH: {
-        ...state.WH,
+      VF: {
+        ...state.VF,
         ...payload,
-        pagination: {...state.WH.pagination, ...payload.pagination},
+        pagination: {...state.VF.pagination, ...payload.pagination},
       },
     })),
 

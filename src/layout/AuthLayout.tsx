@@ -1,13 +1,11 @@
 import React from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
-  KeyboardAvoidingViewProps,
-  Platform,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+  KeyboardAwareScrollView,
+  KeyboardAwareScrollViewProps,
+} from 'react-native-keyboard-aware-scroll-view';
 
-type Props = KeyboardAvoidingViewProps & {
+type Props = KeyboardAwareScrollViewProps & {
   children: React.ReactNode;
 };
 
@@ -20,7 +18,6 @@ const AuthLayout = ({children, ...props}: Props) => {
       contentContainerStyle={styles.container}
       enableOnAndroid={true}
       enableAutomaticScroll={true}
-      extraScrollHeight={Platform.OS === 'ios' ? 20 : 200}
       keyboardShouldPersistTaps="handled">
       <View>{children}</View>
     </KeyboardAwareScrollView>

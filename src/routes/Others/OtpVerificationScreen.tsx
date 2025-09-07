@@ -11,27 +11,23 @@ import {colors} from '../../constants';
 import CustomButton from '../../components/CustomButton';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigation';
-import {useResponsiveScale} from '../../hooks';
-
-const OTP_LENGTH = 6;
+import {useResponsiveScale, useUploadMediaService} from '../../hooks';
 
 const OtpVerificationScreen = ({
   navigation,
+  route,
 }: NativeStackScreenProps<RootStackParamList, 'OtpVerification'>) => {
-  const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(''));
-  const inputs = useRef<TextInput[]>([]);
+  const {description} = route.params;
+  const {
+    handleChange,
+    inputs,
+    otp,
+    phone,
+    updateServiceDevicePickupCustomerMedia,
+    loading,
+  } = useUploadMediaService(description);
 
   const {scale, verticalScale, moderateScale, scaleFont} = useResponsiveScale();
-
-  const handleChange = (text: string, index: number) => {
-    const newOtp = [...otp];
-    newOtp[index] = text;
-    setOtp(newOtp);
-    if (text && index < OTP_LENGTH - 1) {
-      inputs.current[index + 1]?.focus();
-    }
-  };
-
   const handleKeyPress = (e: any, index: number) => {
     if (e.nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
       inputs.current[index - 1]?.focus();
@@ -59,7 +55,7 @@ const OtpVerificationScreen = ({
             {fontSize: scaleFont(14), marginBottom: verticalScale(20)},
           ]}>
           A 6-digit OTP has been sent to your phone number{' '}
-          <Text style={styles.phone}>+91 9999988888 </Text>
+          <Text style={styles.phone}>+{phone} </Text>
           {/* <Text style={styles.change}>change</Text> */}
         </Text>
 
@@ -103,7 +99,9 @@ const OtpVerificationScreen = ({
 
         <CustomButton
           title="Verify OTP"
-          onPress={() => navigation.navigate('PickupConfirmation')}
+          loading={loading}
+          disabled={otp.length === 5 || loading}
+          onPress={updateServiceDevicePickupCustomerMedia}
         />
       </View>
     </SafeAreaView>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Platform, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {
   CustomButton,
   CustomUploadBox,
@@ -8,10 +8,11 @@ import {
 import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openVideoCamera} from '../../utils';
-import {deviceVideoSchema} from '../../validations';
 import {useMediaStore} from '../../store';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const PackingVerificationScreen = () => {
+  const {bottom} = useSafeAreaInsets();
   const {videos, setVideo} = useMediaStore();
   const [errorShow, setErrorShow] = useState({before: false, after: false});
   const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
@@ -35,7 +36,13 @@ const PackingVerificationScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            paddingBottom: Platform.OS === 'ios' ? 0 : bottom,
+          },
+        ]}>
         <View style={{flex: 1}}>
           <View>
             <Text style={styles.title}>Device Videos</Text>
@@ -74,20 +81,20 @@ const PackingVerificationScreen = () => {
           title="Submit"
           disabled={!Boolean(videos.before) || !Boolean(videos.after)}
           onPress={() => {
-            const {error} = deviceVideoSchema.validate(videos, {
-              abortEarly: false,
-            });
+            // const {error} = deviceVideoSchema.validate(videos, {
+            //   abortEarly: false,
+            // });
 
-            if (error) {
-              error.details.forEach(detail => {
-                const field = detail.path[0];
-                setErrorShow(prev => ({...prev, [field]: true}));
-              });
+            // if (error) {
+            //   error.details.forEach(detail => {
+            //     const field = detail.path[0];
+            //     setErrorShow(prev => ({...prev, [field]: true}));
+            //   });
 
-              return;
-            }
+            //   return;
+            // }
 
-            setErrorShow({after: false, before: false});
+            // setErrorShow({after: false, before: false});
             navigate('PreviewAllMedia');
           }}
           style={{marginTop: 20}}
@@ -135,5 +142,11 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     marginTop: spacing.lg,
     justifyContent: 'center',
+  },
+  video: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16,
+    backgroundColor: '#000',
   },
 });

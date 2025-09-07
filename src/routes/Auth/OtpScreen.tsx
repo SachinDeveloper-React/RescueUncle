@@ -27,6 +27,7 @@ const OtpScreen = ({
     auth,
     handleValidateOtp,
     error,
+    loading,
   } = useAuth();
 
   return (
@@ -97,9 +98,16 @@ const OtpScreen = ({
           </Text>
         </TouchableOpacity>
 
-        <CustomButton title="Verify OTP" onPress={handleValidateOtp} />
+        <CustomButton
+          title="Verify OTP"
+          onPress={handleValidateOtp}
+          loading={loading.otp}
+          disabled={auth.mobile_otp.some(digit => digit.trim() === '')}
+        />
 
-        <Text>{error.otp}</Text>
+        <Text style={{textAlign: 'center', color: 'red', marginTop: 20}}>
+          {error.otp}
+        </Text>
       </View>
     </SafeAreaView>
   );

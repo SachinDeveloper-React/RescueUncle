@@ -43,3 +43,4 @@ export {default as FilterIcon} from './FilterIcon';
 export {default as PreviewIcon} from './PreviewIcon';
 export {default as BankIcon} from './BankIcon';
 export {default as EditVehicleDetailIcon} from './EditVehicleDetailIcon';
+export {default as WarehouseIcon} from './WarehouseIcon';

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,21 @@ import {
   TextInput,
 } from 'react-native';
 import ImageView from 'react-native-image-viewing';
-import Video from 'react-native-video';
+import Video, {VideoRef} from 'react-native-video';
 import {useMediaStore} from '../../store/mediaStore';
 import {CustomButton} from '../../components';
 import {navigate} from '../../navigation';
 import {AuthLayout} from '../../layout';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {useHeaderHeight} from '@react-navigation/elements';
 
 const PreviewAllMediaScreen = () => {
+  const headerHeight = useHeaderHeight();
+  const videoRefs = useRef<{[key: string]: VideoRef | null}>({});
   const [visible, setIsVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
   const [description, setDescription] = useState('');
+  const [controles, setControles] = useState(false);
 
   const {videos, photos} = useMediaStore();
 
@@ -25,7 +30,7 @@ const PreviewAllMediaScreen = () => {
   const videoEntries = Object.entries(videos || {});
 
   return (
-    <AuthLayout>
+    <AuthLayout extraScrollHeight={Number(headerHeight) || 0}>
       <View style={styles.container}>
         <Text style={styles.title}>Photo Previews</Text>
         <View style={styles.mediaGrid}>
@@ -48,16 +53,47 @@ const PreviewAllMediaScreen = () => {
         {videoEntries.length > 0 && (
           <>
             <Text style={[styles.title, {marginTop: 24}]}>Video Previews</Text>
-            <View style={styles.mediaGrid}>
+
+            <View
+              style={[
+                styles.mediaGrid,
+                {
+                  flexDirection: 'column',
+                  width: '100%',
+                },
+              ]}>
               {videoEntries.map(([label, asset]) =>
                 asset?.uri ? (
-                  <View key={label} style={styles.mediaItem}>
-                    <Video
-                      source={{uri: asset.uri}}
-                      style={styles.video}
-                      controls
-                      resizeMode="contain"
-                    />
+                  <View key={label}>
+                    <View style={{position: 'relative'}}>
+                      <Video
+                        ref={ref => (videoRefs.current[label] = ref) as any}
+                        source={{uri: asset.uri}}
+                        style={styles.video}
+                        resizeMode="contain"
+                        controls={controles}
+                        onFullscreenPlayerWillDismiss={() => {
+                          videoRefs.current[label]?.pause();
+                          setControles(false);
+                        }}
+                        paused={true}
+                      />
+                      <TouchableOpacity
+                        hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                        style={styles.fullscreenBtn}
+                        onPress={() => {
+                          videoRefs.current[label]?.presentFullscreenPlayer();
+                          videoRefs.current[label]?.resume();
+                          setControles(true);
+                        }}>
+                        <Entypo
+                          name="resize-full-screen"
+                          size={16}
+                          color="#fff"
+                        />
+                      </TouchableOpacity>
+                    </View>
+
                     <Text style={styles.videoLabel}>🎥 {label}</Text>
                     <Text numberOfLines={1} style={styles.videoUri}>
                       {asset.fileName || asset.uri}
@@ -93,8 +129,13 @@ const PreviewAllMediaScreen = () => {
         />
 
         <CustomButton
-          title="Continue"
-          onPress={() => navigate('OtpVerification')}
+          title="Next"
+          disabled={!description}
+          onPress={() =>
+            navigate('OtpVerification', {
+              description: description,
+            })
+          }
           style={{
             marginVertical: 20,
           }}
@@ -147,12 +188,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     color: '#666',
+    textTransform: 'capitalize',
   },
   videoLabel: {
     fontSize: 16,
     color: '#444',
     fontWeight: '500',
-    marginBottom: 4,
+    marginVertical: 8,
+    textTransform: 'capitalize',
   },
   videoUri: {
     fontSize: 12,
@@ -180,5 +223,13 @@ const styles = StyleSheet.create({
     color: '#000',
     backgroundColor: '#f9f9f9',
     textAlignVertical: 'top',
+  },
+  fullscreenBtn: {
+    position: 'absolute',
+    bottom: 0,
+    right: 20,
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 8,
   },
 });

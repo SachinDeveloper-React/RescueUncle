@@ -86,7 +86,7 @@ type ServiceSectionState = {
 };
 
 type ServiceStore = {
-  WH: ServiceSectionState;
+  VF: ServiceSectionState;
   Customer: ServiceSectionState;
   SC: ServiceSectionState;
   setWH: (payload: Partial<ServiceSectionState>) => void;

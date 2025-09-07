@@ -4,7 +4,7 @@ export const attachRequestInterceptor = (client: AxiosInstance) => {
   client.interceptors.request.use(
     async (config: any) => {
       const token = await getBearerToken();
-
+      console.log('token', token);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

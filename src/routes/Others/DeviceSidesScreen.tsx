@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Platform, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomButton, CustomUploadBox} from '../../components';
 import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openCamera} from '../../utils';
 import EnhancedImageViewing from 'react-native-image-viewing';
 import {useMediaStore} from '../../store/mediaStore';
-import {deviceSideSchema} from '../../validations';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const DeviceSidesScreen = () => {
+  const {bottom} = useSafeAreaInsets();
   const {photos, setPhoto} = useMediaStore();
   const [visible, setIsVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
@@ -36,7 +37,13 @@ const DeviceSidesScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            paddingBottom: Platform.OS === 'ios' ? 0 : bottom,
+          },
+        ]}>
         <View style={{flex: 1}}>
           <View>
             <Text style={styles.title}>Device Photos</Text>
@@ -70,23 +77,23 @@ const DeviceSidesScreen = () => {
         </View>
 
         <CustomButton
-          title="Submit"
-          disabled={!Boolean(photos.front) || !Boolean(photos.back)}
+          title="Next"
+          disabled={!Boolean(photos.left) || !Boolean(photos.right)}
           onPress={() => {
-            const {error} = deviceSideSchema.validate(photos, {
-              abortEarly: false,
-            });
+            // const {error} = deviceSideSchema.validate(photos, {
+            //   abortEarly: false,
+            // });
 
-            if (error) {
-              error.details.forEach(detail => {
-                const field = detail.path[0];
-                setErrorShow(prev => ({...prev, [field]: true}));
-              });
+            // if (error) {
+            //   error.details.forEach(detail => {
+            //     const field = detail.path[0];
+            //     setErrorShow(prev => ({...prev, [field]: true}));
+            //   });
 
-              return;
-            }
+            //   return;
+            // }
 
-            setErrorShow({left: false, right: false});
+            // setErrorShow({left: false, right: false});
             navigate('PackingVerification');
           }}
           style={{marginTop: 20}}

@@ -8,7 +8,7 @@ type Props = {};
 
 const AppNavigationContainer = (props: Props) => {
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} direction="ltr">
       <LocationPermissionProvider>
         <AppNavigator />
       </LocationPermissionProvider>

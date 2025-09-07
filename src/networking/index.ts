@@ -8,4 +8,4 @@ export {
 export {AccountsApi, ServiceApi} from './ApiClient';
 export {attachRequestInterceptor, getBearerToken} from './RequestInterceptor';
 export {attachResponseInterceptor} from './ResponseInterceptor';
-export {AuthApi, ProfileApi, OrderApi} from './api';
+export {AuthApi, ProfileApi, OrderApi, MediaApi} from './api';

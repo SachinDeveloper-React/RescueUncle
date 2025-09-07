@@ -33,13 +33,14 @@ export const attachResponseInterceptor = (client: AxiosInstance) => {
 const newAccessToken = async (): Promise<string | null> => {
   try {
     const refreshToken = await getBearerRefreshToken();
+
     if (!refreshToken) return null;
 
     const response = await refreshClient.post(`${BASE_URL}/regenerate-token`, {
       refresh_token: refreshToken,
     });
 
-    const newToken = response.data?.data[0].access_token;
+    const newToken = response?.data?.data[0].access_token;
 
     if (newToken) {
       const credentials = {
@@ -59,10 +60,12 @@ const newAccessToken = async (): Promise<string | null> => {
   } catch (error) {
     // await Keychain.resetGenericPassword()
 
-    console.error(
-      'Token refresh failed:',
-      error instanceof Error ? error.message : error,
-    );
+    // console.error(
+    //   'Token refresh failed:',
+    //   error instanceof Error ? error.message : error,
+    // );
+
+    await Keychain.resetGenericPassword();
 
     return null;
   }

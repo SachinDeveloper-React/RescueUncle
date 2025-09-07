@@ -19,7 +19,7 @@ import {formatDate} from '../../../../utils';
 type Props = NativeStackScreenProps<RootStackParamList, 'OrderDetail'>;
 
 export default function OrderDetailScreen({navigation, route}: Props) {
-  const {id, tab} = route.params;
+  const {id, tab, type} = route.params;
 
   const {data, error, loading, onRefresh} = useOrderDetailsService({
     id: String(id),
@@ -27,7 +27,7 @@ export default function OrderDetailScreen({navigation, route}: Props) {
   });
 
   if (loading) return <CustomLoading />;
-  if (error) return <CustomError />;
+  if (error) return <CustomError error={error} />;
 
   const renderOrderDetailCard = ({item}: {item: OrderItem}) => {
     const {
@@ -59,11 +59,13 @@ export default function OrderDetailScreen({navigation, route}: Props) {
         {charges && (
           <ChargesInfo charges={charges} payment_type={payment_type} />
         )}
-        <CustomButton
-          title="Confirm Pickup"
-          style={styles.confirmBtn}
-          onPress={() => navigation.navigate('DeviceExterior')}
-        />
+        {(type === 'Next' || !type) && (
+          <CustomButton
+            title="Confirm Pickup"
+            style={styles.confirmBtn}
+            onPress={() => navigation.navigate('DeviceExterior')}
+          />
+        )}
       </View>
     );
   };

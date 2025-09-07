@@ -3,25 +3,25 @@ import {OrderApi} from '../networking';
 import {DateType} from 'react-native-ui-datepicker';
 import {useOrderStore} from '../store';
 
-type TabType = 'WH' | 'Customer' | 'SC';
+type TabType = 'VF' | 'Customer' | 'SC';
 
 const useOrderService = () => {
   const loadedTabs = useRef<Set<string>>(new Set());
-  const {Customer, SC, WH, setCustomer, setSC, setWH} = useOrderStore();
+  const {Customer, SC, VF, setCustomer, setSC, setWH} = useOrderStore();
 
-  const tabs: TabType[] = ['WH', 'Customer', 'SC'];
+  const tabs: TabType[] = ['VF', 'Customer', 'SC'];
   const [selectedTab, setSelectedTab] = useState<TabType>('Customer');
 
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<DateType>(new Date());
   const [refreshLoadingState, setRefreshLoadingState] = useState<{
-    WH: boolean;
+    VF: boolean;
     Customer: boolean;
     SC: boolean;
   }>({
     Customer: false,
     SC: false,
-    WH: false,
+    VF: false,
   });
 
   const setLoadingState = (
@@ -30,7 +30,7 @@ const useOrderService = () => {
     error: string | null = null,
   ) => {
     const setterMap = {
-      WH: setWH,
+      VF: setWH,
       Customer: setCustomer,
       SC: setSC,
     };
@@ -59,7 +59,7 @@ const useOrderService = () => {
               pickup_customer: 'True',
               drop_customer: 'True',
             }
-          : tab === 'WH'
+          : tab === 'VF'
           ? {
               verification: 'True',
             }
@@ -71,36 +71,30 @@ const useOrderService = () => {
           : {};
       const response = await OrderApi.getOrderService(params);
       const setterMap = {
-        WH: setWH,
+        VF: setWH,
         Customer: setCustomer,
         SC: setSC,
       };
 
       if (response.code == 200) {
-        setTimeout(() => {
-          setterMap[tab]({
-            pagination: response.data,
-            loading: false,
-            error: null,
-          });
-        }, 5000);
+        setterMap[tab]({
+          pagination: response.data,
+          loading: false,
+          error: null,
+        });
       } else {
-        setTimeout(() => {
-          setLoadingState(
-            tab,
-            false,
-            response.data.message || 'Failed to fetch data',
-          );
-        }, 5000);
+        setLoadingState(
+          tab,
+          false,
+          response.data.message || 'Failed to fetch data',
+        );
       }
     } catch (error: any) {
       console.log('error', error);
       setLoadingState(tab, false, error.message || 'Failed to fetch data');
     } finally {
       if (forceRefresh) {
-        setTimeout(() => {
-          setRefreshLoadingState(prev => ({...prev, [tab]: false}));
-        }, 5000);
+        setRefreshLoadingState(prev => ({...prev, [tab]: false}));
       }
     }
   };
@@ -114,7 +108,7 @@ const useOrderService = () => {
     tabs,
     selectedTab,
     Customer,
-    WH,
+    VF,
     SC,
     isDatePickerVisible,
     selectedDate,

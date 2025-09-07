@@ -7,5 +7,7 @@ export {
   type VehicleDetails,
 } from './forms';
 export {useAuthStore} from './authStore';
-export {useOrderStore} from './orderStore';
+export {useOrderDetailsStore} from './orderDetails';
 export {useMediaStore} from './mediaStore';
+export {useOrderStore} from './orderStore';
+export {useWarehouseStore} from './warehouseStore';

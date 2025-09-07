@@ -24,23 +24,9 @@ const LoginScreen = ({
     windowHeight,
   } = useResponsiveScale();
   const {auth, handleChange, handleSendOtp, loading, error} = useAuth();
-  const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardStatus(true);
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardStatus(false);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   return (
-    <AuthLayout keyboardVerticalOffset={keyboardStatus ? headerHeight : 0}>
+    <AuthLayout extraScrollHeight={headerHeight}>
       <View style={styles.bgContainer}>
         <Bg width={windowWidth} height={windowHeight * 0.6} />
         <View

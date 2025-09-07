@@ -1,10 +1,10 @@
 import {useOrderDetailsStore} from '../store/orderDetails';
 import {OrderApi} from '../networking';
 import {useEffect} from 'react';
+import {OrderDetailTab} from '../navigation/types';
 
-type TabType = 'WH' | 'Customer' | 'SC';
 type Props = {
-  tab: TabType;
+  tab: OrderDetailTab;
   id: string;
 };
 
@@ -31,7 +31,7 @@ const useOrderDetailsService = ({tab, id}: Props) => {
               drop_customer: 'True',
               service_id: id,
             }
-          : tab === 'WH'
+          : tab === 'VF'
           ? {
               verification: 'True',
               service_id: id,
@@ -42,9 +42,20 @@ const useOrderDetailsService = ({tab, id}: Props) => {
               pickup_service_center: 'True',
               service_id: id,
             }
+          : tab === 'DS'
+          ? {
+              service_center_device_dropped_warehouse: 'True',
+              service_id: id,
+            }
+          : tab === 'DC'
+          ? {
+              customer_pick_drop_warehouse: 'True',
+              service_id: id,
+            }
           : {};
 
       const response = await OrderApi.getOrderServiceDetailById(params);
+
       if (response.code === 200) {
         setData(response.data.data);
       } else {

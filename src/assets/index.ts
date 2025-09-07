@@ -41,6 +41,7 @@ export {
   PreviewIcon,
   BankIcon,
   EditVehicleDetailIcon,
+  WarehouseIcon,
 } from './Icons';
 
 export {default as NoDataFound} from './NoDataFound';

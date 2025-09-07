@@ -31,8 +31,14 @@ const UserSection = ({customerDetails}: Props) => {
     <View style={styles.section}>
       <View style={[styles.infoRow, {alignItems: 'center'}]}>
         <UserIcon />
-        <Text style={styles.label}>{customerDetails.full_name}</Text>
+        <Text style={styles.label}>
+          {customerDetails?.full_name || 'Guest'}
+        </Text>
         <CallIcon2 />
+        <Text style={styles.label}>
+          {customerDetails?.mobile ||
+            customerDetails?.alternative_contact_number}
+        </Text>
       </View>
 
       <AddressRow

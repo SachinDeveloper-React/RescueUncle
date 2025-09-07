@@ -26,4 +26,7 @@ export {
   EditBankDetailScreen,
   EditVehicleDetailScreen,
   PreviewAllMediaScreen,
+  DropCustomer,
+  DropService,
+  WarehouseScreen,
 } from './Others';

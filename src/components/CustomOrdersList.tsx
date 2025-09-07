@@ -7,12 +7,14 @@ import {
   Pressable,
   Dimensions,
   RefreshControlProps,
+  ViewStyle,
 } from 'react-native';
 import {ArrowDownIcon, NoDataFound} from '../assets';
 import {moderateScale} from '../utils/scale';
 import {colors} from '../constants';
-import {ServiceData} from '../store';
+
 import LottieView from 'lottie-react-native';
+import {ServiceData} from '../@types';
 
 type Props = {
   ordersList: ServiceData[];
@@ -20,6 +22,7 @@ type Props = {
   refreshControl?: React.ReactElement<RefreshControlProps>;
   error?: string | null;
   onPress: (id: string | number) => void;
+  contentContainerStyle?: ViewStyle;
 };
 
 const statusColors: Record<string, string> = {
@@ -47,6 +50,7 @@ const CustomOrdersList = ({
   loading,
   refreshControl,
   onPress,
+  contentContainerStyle,
 }: Props) => {
   const renderItem = ({item}: {item: ServiceData}) => (
     <Pressable
@@ -106,7 +110,9 @@ const CustomOrdersList = ({
       keyExtractor={item => `orderlist_${item.service_id}`}
       renderItem={renderItem}
       contentContainerStyle={
-        ordersList.length === 0 ? {flex: 1} : styles.listContent
+        ordersList.length === 0
+          ? {flex: 1}
+          : [contentContainerStyle, styles.listContent]
       }
       // scrollEnabled={ordersList.length !== 0}
       accessibilityRole="list"

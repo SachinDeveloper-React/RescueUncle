@@ -1,22 +1,28 @@
 import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {colors, options} from '../../../constants';
 import {
-  CallIcon,
-  EmailIcon,
-  RightIcon,
-  StarIcon,
-  UserIcon,
-} from '../../../assets';
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {colors, options} from '../../../constants';
+import {CallIcon, EmailIcon, RightIcon, UserIcon} from '../../../assets';
 import {verticalScale, moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../../navigation';
 import {useDetailsForm} from '../../../hooks';
 import {PersonalDetails, useAuthStore} from '../../../store';
+import LottieView from 'lottie-react-native';
 
 type ProfileHeaderProps = {
   data: PersonalDetails;
+  loading: {
+    loading: boolean;
+    error: string | null;
+  };
 };
-const ProfileHeader = ({data}: ProfileHeaderProps) => (
+const ProfileHeader = ({data, loading}: ProfileHeaderProps) => (
   <View style={styles.profileWrapper}>
     {/* <View style={styles.avatarBorder}>
       <Image
@@ -27,40 +33,51 @@ const ProfileHeader = ({data}: ProfileHeaderProps) => (
         resizeMode="cover"
       />
     </View> */}
-    <View style={styles.infoSection}>
-      <View style={styles.row}>
-        <View style={styles.iconWrapper}>
-          <UserIcon />
+    {loading.loading ? (
+      <LottieView
+        source={require('../../../assets/animations/dot.json')}
+        autoPlay
+        loop
+        renderMode="AUTOMATIC"
+        style={styles.lottie}
+        resizeMode="cover"
+      />
+    ) : (
+      <View style={styles.infoSection}>
+        <View style={styles.row}>
+          <View style={styles.iconWrapper}>
+            <UserIcon />
+          </View>
+          <Text
+            style={[
+              styles.text,
+              {
+                textTransform: 'capitalize',
+              },
+            ]}>
+            {data.full_name}
+          </Text>
+          {/* <View style={[styles.row, styles.star, {marginBottom: 0}]}>
+            <Text style={styles.ratingText}>4.9</Text>
+            <StarIcon />
+          </View> */}
         </View>
-        <Text
-          style={[
-            styles.text,
-            {
-              textTransform: 'capitalize',
-            },
-          ]}>
-          {data.full_name}
-        </Text>
-        <View style={[styles.row, styles.star, {marginBottom: 0}]}>
-          <Text style={styles.ratingText}>4.9</Text>
-          <StarIcon />
+        <View style={styles.row}>
+          <View style={styles.iconWrapper}>
+            <CallIcon />
+          </View>
+          <Text style={styles.text}>+{data.user_mobile}</Text>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.iconWrapper}>
+            <EmailIcon />
+          </View>
+          <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+            {data.blood_group}
+          </Text>
         </View>
       </View>
-      <View style={styles.row}>
-        <View style={styles.iconWrapper}>
-          <CallIcon />
-        </View>
-        <Text style={styles.text}>+{data.user_mobile}</Text>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.iconWrapper}>
-          <EmailIcon />
-        </View>
-        <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-          {data.blood_group}
-        </Text>
-      </View>
-    </View>
+    )}
   </View>
 );
 
@@ -93,11 +110,12 @@ const OptionItem = ({
 );
 
 const AccountScreen = () => {
-  const {personalDetails, fetchProfileDetails} = useDetailsForm();
+  const {state, personalDetails, fetchProfileDetails} = useDetailsForm();
 
   useEffect(() => {
     fetchProfileDetails();
   }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -106,7 +124,7 @@ const AccountScreen = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
           <>
-            <ProfileHeader data={personalDetails} />
+            <ProfileHeader data={personalDetails} loading={state.profile} />
             <Text style={styles.optionsTitle}>Options</Text>
           </>
         )}
@@ -201,5 +219,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(8),
     fontSize: moderateScale(16),
     color: colors.textPrimary,
+  },
+  lottie: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width * 0.3,
+    alignItems: 'center',
   },
 });

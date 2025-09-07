@@ -4,3 +4,5 @@ export {default as useAuth} from './useAuth';
 export {default as useDetailsForm} from './useDetailsForm';
 export {default as useOrderService} from './useOrderService';
 export {default as useOrderDetailsService} from './useOrderDetailsService';
+export {default as useUploadMediaService} from './useUploadMediaService';
+export {default as useWarehouseService} from './useWarehouseService';

@@ -23,6 +23,7 @@ import {
   SupportScreen,
   TermsAndConditionScreen,
   TransactionScreen,
+  WarehouseScreen,
 } from '../routes';
 import {colors} from '../constants';
 import {StyleSheet, View} from 'react-native';
@@ -274,6 +275,17 @@ const AppNavigator = (props: Props) => {
                     headerTintColor: colors.textPrimary,
                   })}
                   component={PreviewAllMediaScreen}
+                />
+                <RootStack.Screen
+                  name="WarehouseScreen"
+                  options={() => ({
+                    headerShown: true,
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitle: 'Warehouse',
+                    headerShadowVisible: true,
+                    headerTintColor: colors.textPrimary,
+                  })}
+                  component={WarehouseScreen}
                 />
               </RootStack.Group>
             </>

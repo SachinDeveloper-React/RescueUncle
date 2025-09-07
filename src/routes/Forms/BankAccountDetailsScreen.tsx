@@ -48,7 +48,7 @@ const BankAccountDetailsScreen = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <AuthLayout keyboardVerticalOffset={0}>
+      <AuthLayout>
         <View style={[styles.formContainer, {paddingHorizontal: scale(16)}]}>
           <TouchableOpacity onPress={goBack}>
             <BackArrowIcon />

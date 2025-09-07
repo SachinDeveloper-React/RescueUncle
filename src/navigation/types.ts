@@ -23,18 +23,28 @@ export type BottomTabParamList = {
   Account: undefined;
 };
 
+// VF = VERIFICATION
+// SC = SERVICE CENTER
+// DC = DROP CUSTOMER
+// DS = DROP SERVICE
+
+export type OrderDetailTab = 'VF' | 'Customer' | 'SC' | 'DC' | 'DS';
+export type OrderDetailType = 'View' | 'Next';
 export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Main: NavigatorScreenParams<BottomTabParamList>;
   Profile: NavigatorScreenParams<ProfileStackParamList>;
   OrderDetail: {
     id: string | number;
-    tab: 'WH' | 'Customer' | 'SC';
+    tab: OrderDetailTab;
+    type?: OrderDetailType;
   };
   DeviceExterior: undefined;
   DeviceSides: undefined;
   PackingVerification: undefined;
-  OtpVerification: undefined;
+  OtpVerification: {
+    description: string;
+  };
   PickupConfirmation: undefined;
   EditProfile: undefined;
   EditVehicleDetail: undefined;
@@ -49,4 +59,5 @@ export type RootStackParamList = {
   OrderHistory: undefined;
   Earnings: undefined;
   PreviewAllMedia: undefined;
+  WarehouseScreen: undefined;
 };

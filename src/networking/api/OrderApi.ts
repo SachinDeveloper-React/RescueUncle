@@ -11,6 +11,8 @@ const OrderApi = {
     drop_customer?: string;
     service_date?: string;
     history?: string;
+    service_center_device_dropped_warehouse?: string;
+    customer_pick_drop_warehouse?: string;
   }) => {
     try {
       const response = await ServiceApi.get(URLS.SERVICES.GETSERVICES, {

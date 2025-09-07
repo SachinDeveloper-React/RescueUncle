@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {SafeAreaView, View, StyleSheet, Text, Alert} from 'react-native';
+import {SafeAreaView, View, StyleSheet, Text, Platform} from 'react-native';
 import {CustomButton, CustomUploadBox} from '../../components';
 import {colors, spacing} from '../../constants';
 import {navigate} from '../../navigation';
 import {openCamera} from '../../utils';
 import ImageView from 'react-native-image-viewing';
 import {useMediaStore} from '../../store/mediaStore';
-import {deviceExteriorSchema} from '../../validations';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const DeviceExteriorScreen = () => {
+  const {bottom} = useSafeAreaInsets();
   const [visible, setIsVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
   const [errorShow, setErrorShow] = useState({front: false, back: false});
@@ -36,7 +37,13 @@ const DeviceExteriorScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            paddingBottom: Platform.OS === 'ios' ? 0 : bottom,
+          },
+        ]}>
         <View style={{flex: 1}}>
           <View>
             <Text style={styles.title}>Device Photos</Text>
@@ -72,23 +79,9 @@ const DeviceExteriorScreen = () => {
         </View>
 
         <CustomButton
-          title="Submit"
+          title="Next"
           disabled={!Boolean(photos.front) || !Boolean(photos.back)}
           onPress={() => {
-            const {error} = deviceExteriorSchema.validate(photos, {
-              abortEarly: false,
-            });
-
-            if (error) {
-              error.details.forEach(detail => {
-                const field = detail.path[0];
-                setErrorShow(prev => ({...prev, [field]: true}));
-              });
-
-              return;
-            }
-
-            setErrorShow({front: false, back: false});
             navigate('DeviceSides');
           }}
           style={{marginTop: 20}}
